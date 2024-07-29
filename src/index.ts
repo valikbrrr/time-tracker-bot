@@ -1,35 +1,41 @@
-import { Bot, type Context, GrammyError, HttpError, InlineKeyboard, Keyboard, session } from "grammy";
+import { Api, Bot, Context, GrammyError, HttpError, InlineKeyboard, Keyboard, session } from "grammy";
 import {
     type Conversation,
     type ConversationFlavor,
     conversations,
     createConversation,
 } from "@grammyjs/conversations";
-import { hydrate, HydrateFlavor } from "@grammyjs/hydrate";
+import { hydrate, HydrateFlavor, HydrateApiFlavor, hydrateContext, hydrateApi } from "@grammyjs/hydrate";
+import { log } from "console";
 
 type MyContextConversation = Context & ConversationFlavor;
 type MyConversation = Conversation<MyContextConversation>;
 
-type MyContextHydrate = HydrateFlavor<Context>;
+type MyContextHydrate = HydrateApiFlavor<Api>;
 
-const bot = new Bot<MyContextConversation>(process.env.TELEGRAM_TOKEN || "");
+const bot = new Bot<MyContextConversation, MyContextHydrate >(process.env.TELEGRAM_TOKEN || "");
 
-// bot.use(hydrate())
+// bot.use(hydrateContext())
+bot.api.config.use(hydrateApi())
 
 bot.api.setMyCommands([
   {
     command: "start",
     description: "Запуск бота"
   },
+  {
+    command: "my_id",
+    description: "Узнать свой id"
+  },
+  {
+    command: "support",
+    description: "Помощь"
+  },
 ])
 
-// bot.hears("info", async (ctx) => {
-//   console.log(ctx)
-// })
 
-
-
-
+// regex
+// отделение 1 от 2 
 
 async function selectMonth(conversation: MyConversation, ctx: MyContextConversation) {
     await ctx.reply("Какое кол-во часов вы работали в этом месяце?⏰");
@@ -66,23 +72,33 @@ bot.use(createConversation(inputInterval));
 bot.use(createConversation(selectProject));
 bot.use(createConversation(createNewProject));
 
+const allowedUsers = [1958491438, 882091398];
 
+bot.use((ctx: Context, next) => {
+  console.log(ctx.from?.id);
+  const userId = ctx.from?.id;
+  if (userId && allowedUsers.includes(userId)) {
+    return next(); 
+  } else {
+    return ctx.reply("Вам доступ ограничен");
+  }
+});
 
 bot.command("start", async (ctx) => {
-  const authorization = new Keyboard()
-    .text("Авторизоваться")
-  ctx.reply("Предлагаю вам авторизоваться😉", {
-    reply_markup:  authorization
-  })
-})
-
-bot.hears("Авторизоваться", async (ctx) => {
   const choiceDirection = new Keyboard()
     .text("Учёт времени по месяцам").row()
     .text("Учёт времени по проектам")
-  await ctx.reply("Следующий шаг", {
+  await ctx.reply("Выберите формат ввода времени", {
   reply_markup:  choiceDirection
   })
+})
+
+bot.command("my_id", async (ctx) => {
+  await ctx.reply(`Вот ваш id: ${ctx.from?.id}`)
+})
+
+bot.command("support", async (ctx) => {
+  await ctx.reply(`Пока я ничем не могу вам помочь😔`)
 })
 
 bot.hears("Учёт времени по месяцам", async (ctx) => {
