@@ -5,7 +5,7 @@ import {
     conversations,
     createConversation,
 } from "@grammyjs/conversations";
-import { hydrate, HydrateFlavor, HydrateApiFlavor, hydrateContext, hydrateApi } from "@grammyjs/hydrate";
+import { hydrate, HydrateFlavor} from "@grammyjs/hydrate";
 
 type MyContextConversation = Context & ConversationFlavor;
 type MyConversation = Conversation<MyContextConversation>;
@@ -57,14 +57,22 @@ async function createNewProject(conversation: MyConversation, ctx: MyContextConv
     .text("Сохранить название и продолжить", "nextStepCreate").row()
     .text("Изменить название", "BackToCreateProject")
   const nameOfNewProject = await conversation.wait();
-  await ctx.reply(`Поздравляю! Вы создали новый проект под названием "${nameOfNewProject.message?.text}" 🥳`, {
+  await ctx.reply(`Поздравляю! Вы создали новый проект под названием: "${nameOfNewProject.message?.text}" 🥳`, {
     reply_markup: inlineKeyboard
   });
-  const nextStepCreateCallback = await conversation.waitForCallbackQuery("nextStepCreate");
-  await ctx.reply("Какое кол-во часов вы работали над этим проектом?⏰");
-  const hoursOfProject = await conversation.wait();
-  await ctx.reply(`Это всё, спасибо!`);
+  const callbackQuery = await conversation.waitForCallbackQuery(["nextStepCreate", "BackToCreateProject"]);
+  if (callbackQuery.callbackQuery.data === "nextStepCreate") {
+    await callbackQuery.answerCallbackQuery()
+    await ctx.reply("Какое кол-во часов вы работали над этим проектом?⏰");
+    const hoursOfProject = await conversation.wait();
+    await ctx.reply(`Это всё, спасибо!`);
+  } else if (callbackQuery.callbackQuery.data === "BackToCreateProject") {
+    await callbackQuery.answerCallbackQuery()
+    await ctx.reply(`Введите название нового проекта:`);
+    await createNewProject(conversation, ctx);
+  }
 }
+
 
 bot.use(session({ initial: () => ({}) }));
 bot.use(conversations());
