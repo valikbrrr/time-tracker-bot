@@ -1,3 +1,4 @@
+// src/myContext.ts
 import {Context} from "grammy";
 
 import {
@@ -7,9 +8,9 @@ import {
 
 import {HydrateFlavor} from "@grammyjs/hydrate";
 
-type MyContextConversation = Context & ConversationFlavor;
-type MyConversation = Conversation<MyContextConversation>;
+export type MyContextConversation = Context & ConversationFlavor;
+export type MyConversation = Conversation<MyContextConversation>;
 
-type MyContextHydrate = HydrateFlavor<Context>;
+export type MyContextHydrate = HydrateFlavor<Context>;
 
 export type MyContext = MyContextConversation & MyContextHydrate;
