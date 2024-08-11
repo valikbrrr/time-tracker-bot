@@ -1,15 +1,3 @@
-// // src/conversations/selectProject.ts
-// import { createConversation } from "@grammyjs/conversations";
-// import { MyContext } from "../types";
-
-// const selectProject = createConversation(async function selectProject(conversation, ctx: MyContext) {
-//   await ctx.reply("Какое кол-во часов вы работали над этим проектом?⏰");
-//   const hoursOfProject = await conversation.wait();
-//   await ctx.reply("Это всё, спасибо!");
-// });
-
-// export default selectProject;
-
 import { MyConversation, MyContextConversation } from "../myContext";
 
 export async function selectProject(conversation: MyConversation, ctx: MyContextConversation) {

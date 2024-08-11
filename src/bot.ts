@@ -1,22 +1,3 @@
-// // src/bot.ts
-// import { Bot, session } from "grammy";
-// import commands from "./commands";
-// import conversations from "./conversations";
-// import middlewares from "./middlewares";
-// import { hydrate } from "@grammyjs/hydrate";
-// import { MyContext } from "./types"; // Ваш тип контекста
-
-// const bot = new Bot<MyContext>(process.env.TELEGRAM_TOKEN || "");
-
-// // Используйте встроенную сессию
-// bot.use(session({ initial: () => ({}) }));
-// conversations(bot); // Передайте bot как аргумент
-// bot.use(hydrate());
-// middlewares(bot);
-// commands(bot);
-
-// bot.start();
-
 // src/bot.ts
 import {Bot, GrammyError, HttpError, session } from "grammy";
 import {
@@ -24,7 +5,7 @@ import {
     createConversation,
 } from "@grammyjs/conversations";
 import { hydrate } from "@grammyjs/hydrate";
-import { MyContext, MyConversation, MyContextConversation } from "./myContext";
+import { MyContext } from "./myContext";
 import { selectMonth } from "./conversations/selectMonth";
 // import { inputInterval } from "./conversations/inputInterval";
 import { selectProject } from "./conversations/selectProject";
@@ -34,8 +15,6 @@ import { handleMessage } from "./handlers";
 import { registerCommands } from "./commands/index";
 import { selectMonthBranch } from "./monthBranch/selectMonthBranch";
 import { selectProjectBranch } from "./projectBranch/selectProjectBranch";
-import { selectAddInMonth } from "./monthBranch/selectAddInMonth";
-import { openMonthList } from "./monthBranch/openMonthList";
 import { viewHoursMonth } from "./monthBranch/viewHoursMonth";
 import { selectAddInProject } from "./projectBranch/selectAddInProject";
 import { viewHoursProject } from "./projectBranch/viewHoursProject";
@@ -44,6 +23,11 @@ import { callbackProjectList } from "./projectBranch/callbackProjectList";
 import { callbackBackToProject } from "./projectBranch/callbackBackToProject";
 import { callbackMonthList } from "./monthBranch/callbackMonthList";
 import { callbackBackToMonth } from "./monthBranch/callbackBackToMonth";
+import { openMonthList } from "./monthBranch/openMonthList";
+import { addDataToSheet } from './googleSheets';
+import { google } from "googleapis";
+import { GoogleSpreadsheet } from 'google-spreadsheet';
+import { JWT } from 'google-auth-library';
 
 const bot = new Bot<MyContext>(process.env.TELEGRAM_TOKEN || "");
 
@@ -65,14 +49,7 @@ bot.hears("Учёт времени по месяцам", selectMonthBranch)
 
 bot.hears("Учёт времени по проектам", selectProjectBranch)
 
-bot.hears("Добавить часы за месяц", selectAddInMonth)
-
-bot.hears("Открыть список месяцев", openMonthList)
-
-// bot.hears("Ввести интервал", async (ctx) => {
-//   await ctx.reply(`Введите ваш интервал в формате😊`)
-//   await ctx.conversation.enter(`inputInterval`)
-// })
+bot.hears("Добавить часы за месяц", openMonthList)
 
 bot.hears("Посмотреть ранее введённые часы за месяц", viewHoursMonth)
 
@@ -120,4 +97,40 @@ bot.catch((err) => {
 
 bot.on("message", handleMessage);
 
+// bot.hears("Добавить часы за проект", async (ctx) => {
+//   await ctx.reply("Введите количество часов:");
+//   await ctx.conversation.enter("inputHours"); // Переход в состояние ввода часов
+// });
+
+// // Обработчик ввода часов
+// bot.on("message", async (ctx) => {
+//   const currentState = ctx.conversation.current; // Получаем текущее состояние
+
+//   if (currentState === "inputHours") { // Проверка состояния
+//       const timeProject = ctx.message.text; // Получаем введенные часы
+//       await addDataToSheet([timeProject]); // Записываем данные в таблицу
+//       await ctx.reply(`Вы добавили ${timeProject} часов.`);
+//       await ctx.conversation.leave(); // Выход из состояния
+//   } else {
+//       handleMessage(ctx); // Обработка других сообщений
+//   }
+// });
+
 bot.start()
+// (async () => {
+//   const auth = new google.auth.JWT({
+//     email: process.env.CLIENT_EMAIL,
+//     key: process.env.PRIVATE_KEY,
+//     scopes: ["https://www.googleapis.com/auth/spreadsheets"]
+//   })
+//   const sheet = google.sheets("v4")
+//   await sheet.spreadsheets.values.append({
+//     spreadsheetId: process.env.SHEET_ID,
+//     auth: auth,
+//     range: "Sheet1",
+//     valueInputOption: "RAW",
+//     requestBody: {
+//       values: [["первыйййфывфв", "вторая"]]
+//     }
+//   })
+// })()
