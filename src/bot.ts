@@ -24,15 +24,20 @@ import { callbackBackToProject } from "./projectBranch/callbackBackToProject";
 import { callbackMonthList } from "./monthBranch/callbackMonthList";
 import { callbackBackToMonth } from "./monthBranch/callbackBackToMonth";
 import { openMonthList } from "./monthBranch/openMonthList";
-import { addDataToSheet } from './googleSheets';
-import { google } from "googleapis";
-import { GoogleSpreadsheet } from 'google-spreadsheet';
-import { JWT } from 'google-auth-library';
+
+type MySession = {
+  selectedMonth?: string;
+};
 
 const bot = new Bot<MyContext>(process.env.TELEGRAM_TOKEN || "");
 
 bot.use(accessControl);
 registerCommands(bot);
+
+bot.use((ctx, next) => {
+  ctx.session = ctx.session || {};
+  return next();
+});
 
 bot.use(session({ initial: () => ({}) }));
 bot.use(conversations());
@@ -97,40 +102,4 @@ bot.catch((err) => {
 
 bot.on("message", handleMessage);
 
-// bot.hears("Добавить часы за проект", async (ctx) => {
-//   await ctx.reply("Введите количество часов:");
-//   await ctx.conversation.enter("inputHours"); // Переход в состояние ввода часов
-// });
-
-// // Обработчик ввода часов
-// bot.on("message", async (ctx) => {
-//   const currentState = ctx.conversation.current; // Получаем текущее состояние
-
-//   if (currentState === "inputHours") { // Проверка состояния
-//       const timeProject = ctx.message.text; // Получаем введенные часы
-//       await addDataToSheet([timeProject]); // Записываем данные в таблицу
-//       await ctx.reply(`Вы добавили ${timeProject} часов.`);
-//       await ctx.conversation.leave(); // Выход из состояния
-//   } else {
-//       handleMessage(ctx); // Обработка других сообщений
-//   }
-// });
-
 bot.start()
-// (async () => {
-//   const auth = new google.auth.JWT({
-//     email: process.env.CLIENT_EMAIL,
-//     key: process.env.PRIVATE_KEY,
-//     scopes: ["https://www.googleapis.com/auth/spreadsheets"]
-//   })
-//   const sheet = google.sheets("v4")
-//   await sheet.spreadsheets.values.append({
-//     spreadsheetId: process.env.SHEET_ID,
-//     auth: auth,
-//     range: "Sheet1",
-//     valueInputOption: "RAW",
-//     requestBody: {
-//       values: [["первыйййфывфв", "вторая"]]
-//     }
-//   })
-// })()
