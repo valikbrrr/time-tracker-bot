@@ -1,23 +1,18 @@
 // src/monthBranch/openMonthList.ts
 import { Context, InlineKeyboard } from "grammy"
+import { currentMonth } from "../utils/currentMonth";
+
+let months: string[] = []
 
 export const openMonthList = async (ctx: Context) => {
+    months = await currentMonth()
     const inlineKeyboard = new InlineKeyboard()
-        .text("январь", "январь")
-        .text("февраль", "февраль")
-        .text("март", "март")
-        .text("апрель", "апрель").row()
-        .text("май", "май")
-        .text("июнь", "июнь")
-        .text("июль", "июль")
-        .text("август", "август").row()
-        .text("сентябрь", "сентябрь")
-        .text("октябрь", "октябрь")
-        .text("ноябрь", "ноябрь")
-        .text("декабрь", "декабрь");
-
+        .text(months[0], months[0])
+        .text(months[1], months[1])
+        .text(months[2], months[2])
     await ctx.reply("Выберите месяц из списка:", {
         reply_markup: inlineKeyboard
     });
-
 };
+
+export const monthCallbacks = [months[0], months[1], months[2],];

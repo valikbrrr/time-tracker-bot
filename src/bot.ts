@@ -7,7 +7,6 @@ import {
 import { hydrate } from "@grammyjs/hydrate";
 import { MyContext } from "./myContext";
 import { selectMonth } from "./conversations/selectMonth";
-// import { inputInterval } from "./conversations/inputInterval";
 import { selectProject } from "./conversations/selectProject";
 import { createNewProject } from "./conversations/createNewProject";
 import { accessControl } from "./middlewares/index";
@@ -23,7 +22,7 @@ import { callbackProjectList } from "./projectBranch/callbackProjectList";
 import { callbackBackToProject } from "./projectBranch/callbackBackToProject";
 import { callbackMonthList } from "./monthBranch/callbackMonthList";
 import { callbackBackToMonth } from "./monthBranch/callbackBackToMonth";
-import { openMonthList } from "./monthBranch/openMonthList";
+import { monthCallbacks, openMonthList } from "./monthBranch/openMonthList";
 
 type MySession = {
   selectedMonth?: string;
@@ -78,14 +77,16 @@ bot.callbackQuery("nextStepProject", async (ctx) => {
 
 bot.callbackQuery("backToProjects", callbackBackToProject)
 
-bot.callbackQuery([ "январь", "февраль", "март", "апрель", "май", "июнь", "июль", "август", "сентябрь", "октябрь", "ноябрь", "декабрь" ], callbackMonthList)
+bot.callbackQuery("backToMonths", callbackBackToMonth)
 
 bot.callbackQuery("nextStepMonth", async (ctx) => {
   await ctx.conversation.enter("selectMonth");
   await ctx.answerCallbackQuery()
 })
 
-bot.callbackQuery("backToMonths", callbackBackToMonth)
+bot.callbackQuery([...monthCallbacks], callbackMonthList)
+
+
 
 bot.catch((err) => {
   const ctx = err.ctx;
