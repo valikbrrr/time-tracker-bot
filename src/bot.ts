@@ -23,6 +23,10 @@ import { callbackBackToProject } from "./projectBranch/callbackBackToProject";
 import { callbackMonthList } from "./monthBranch/callbackMonthList";
 import { callbackBackToMonth } from "./monthBranch/callbackBackToMonth";
 import { monthCallbacks, openMonthList } from "./monthBranch/openMonthList";
+import cron from "node-cron"
+import { authenticate } from "./googleSheets";
+import { currentMonth } from "./utils/currentMonth";
+import { currentYear } from "./utils/currentYear";
 
 type MySession = {
   selectedMonth?: string;
@@ -77,6 +81,14 @@ bot.callbackQuery("nextStepProject", async (ctx) => {
 
 bot.callbackQuery("backToProjects", callbackBackToProject)
 
+bot.callbackQuery("confirmMonth", async (ctx) => {
+  const selectedMonth = ctx.session.selectedMonth;
+  if (selectedMonth) {
+      await ctx.conversation.enter("selectMonth");
+      await ctx.answerCallbackQuery();
+  }
+});
+
 bot.callbackQuery("backToMonths", callbackBackToMonth)
 
 bot.callbackQuery("nextStepMonth", async (ctx) => {
@@ -102,5 +114,20 @@ bot.catch((err) => {
 });
 
 bot.on("message", handleMessage);
+
+cron.schedule('0 0 1 * *', async () => {
+  try {
+      let months = currentMonth() 
+      let month = months[2]
+      let year = currentYear();
+      console.log("Cron job executed");
+      const doc = await authenticate();
+      await doc.loadInfo();
+      await doc.addSheet({ title: `${month} ${year}` });
+      console.log("this work!");
+  } catch (error) {
+      console.error("Error");
+  }
+});
 
 bot.start()

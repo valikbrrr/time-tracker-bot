@@ -1,4 +1,4 @@
-export const currentMonth = async () => {
+export const currentMonth = () => {
     let arr:string[] = []
     let controlDate = new Date()
 
@@ -12,7 +12,7 @@ export const currentMonth = async () => {
 
     arr.push(controlDate.toLocaleString('default', { month: 'long' }))
 
-    console.log(arr.reverse());
+    arr.reverse();
     
     return arr
 }

@@ -3,18 +3,14 @@ import { Context, InlineKeyboard } from "grammy"
 import { currentMonth } from "../utils/currentMonth";
 
 export const callbackBackToMonth = async (ctx: Context) => {
-    console.log("back start");
     
     const callbackQuery = ctx.callbackQuery;
 
     if (!callbackQuery || !callbackQuery.message) {
-      console.log(true);
         return; // Если нет callbackQuery или сообщения, выходим
-    } else {
-      console.log(false);
-    }
+    } 
     
-    let months = await currentMonth()
+    let months = currentMonth()
 
     const inlineKeyboard = new InlineKeyboard()
         .text(months[0], months[0])
@@ -23,7 +19,6 @@ export const callbackBackToMonth = async (ctx: Context) => {
       await ctx.api.editMessageText(callbackQuery.message.chat.id, callbackQuery.message.message_id, `Выберите месяц из списка: `, {
         reply_markup: inlineKeyboard,
     });
-    console.log("&&&&&&&&&&&&&&&&77");
     
     await ctx.answerCallbackQuery()
   }

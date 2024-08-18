@@ -46,7 +46,7 @@ export async function createNewProject(conversation: MyConversation, ctx: MyCont
 
         // Запись данных в новый лист
         const sheetId = doc.sheetsByIndex.length - 1; // Получаем индекс нового листа
-        await addDataToSheet(projectName, "Запись часов", [hoursOfNewProj], sheetId);
+        // await addDataToSheet(projectName, "Запись часов", [hoursOfNewProj]);
         await ctx.reply(`Вы ввели: ${hoursOfNewProj}. Это всё, спасибо!`);
     } else if (callbackQuery.callbackQuery.data === "BackToCreateProject") {
         await callbackQuery.answerCallbackQuery();

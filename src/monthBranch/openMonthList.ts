@@ -5,7 +5,7 @@ import { currentMonth } from "../utils/currentMonth";
 let months: string[] = []
 
 export const openMonthList = async (ctx: Context) => {
-    months = await currentMonth()
+    months = currentMonth()
     const inlineKeyboard = new InlineKeyboard()
         .text(months[0], months[0])
         .text(months[1], months[1])
