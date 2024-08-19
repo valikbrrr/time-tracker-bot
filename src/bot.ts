@@ -18,19 +18,15 @@ import { viewHoursMonth } from "./monthBranch/viewHoursMonth";
 import { selectAddInProject } from "./projectBranch/selectAddInProject";
 import { viewHoursProject } from "./projectBranch/viewHoursProject";
 import { openProjectList } from "./projectBranch/openProjectList";
-import { callbackProjectList } from "./projectBranch/callbackProjectList";
+// import { callbackProjectList } from "./projectBranch/callbackProjectList";
 import { callbackBackToProject } from "./projectBranch/callbackBackToProject";
 import { callbackMonthList } from "./monthBranch/callbackMonthList";
 import { callbackBackToMonth } from "./monthBranch/callbackBackToMonth";
 import { monthCallbacks, openMonthList } from "./monthBranch/openMonthList";
 import cron from "node-cron"
-import { authenticate } from "./googleSheets";
+import { authenticate } from "./googleSheets/addMonthTable";
 import { currentMonth } from "./utils/currentMonth";
 import { currentYear } from "./utils/currentYear";
-
-type MySession = {
-  selectedMonth?: string;
-};
 
 const bot = new Bot<MyContext>(process.env.TELEGRAM_TOKEN || "");
 
@@ -72,7 +68,7 @@ bot.hears("Создать новый проект", async (ctx) => {
   await ctx.conversation.enter(`createNewProject`)
 })
 
-bot.callbackQuery(["project-1", "project-2", "project-3", "project-4"], callbackProjectList);
+// bot.callbackQuery(["project-1", "project-2", "project-3", "project-4"], callbackProjectList);
 
 bot.callbackQuery("nextStepProject", async (ctx) => {
   await ctx.conversation.enter("selectProject");
@@ -113,8 +109,6 @@ bot.catch((err) => {
   }
 });
 
-bot.on("message", handleMessage);
-
 cron.schedule('0 0 1 * *', async () => {
   try {
       let months = currentMonth() 
@@ -129,5 +123,8 @@ cron.schedule('0 0 1 * *', async () => {
       console.error("Error");
   }
 });
+
+bot.on("message", handleMessage);
+
 
 bot.start()

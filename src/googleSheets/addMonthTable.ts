@@ -1,10 +1,10 @@
 // src/googleSheets.ts
 import { GoogleSpreadsheet } from 'google-spreadsheet';
 import { JWT } from 'google-auth-library';
-import { currentMonth } from './utils/currentMonth';
-import { currentYear } from './utils/currentYear';
+// import { currentMonth } from './utils/currentMonth';
+import { currentYear } from '../utils/currentYear';
 
-const SHEET_ID = process.env.SHEET_ID as string; // ID вашей таблицы
+const MONTHS_SHEET_ID = process.env.SHEET_ID as string; // ID вашей таблицы
 
 // Функция для аутентификации
 export const authenticate = async () => {
@@ -16,12 +16,12 @@ export const authenticate = async () => {
 
     await auth.authorize(); // Авторизация
 
-    const doc = new GoogleSpreadsheet(SHEET_ID, auth); // Передаем auth в конструктор
+    const doc = new GoogleSpreadsheet(MONTHS_SHEET_ID, auth); // Передаем auth в конструктор
     return doc;
 };
 
 // Функция для добавления данных в таблицу
-export const addDataToSheet = async (name: string, log: string, hours: string[], month: string) => {
+export const addDataToMonthSheet = async (name: string, log: string, hours: string[], month: string) => {
 
     let year = currentYear()
     try {

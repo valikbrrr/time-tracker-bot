@@ -1,6 +1,6 @@
 // src/conversations/selectMonth.ts
 import { MyConversation, MyContextConversation } from "../myContext";
-import { addDataToSheet } from "../googleSheets";
+import { addDataToMonthSheet } from "../googleSheets/addMonthTable";
 
 export async function selectMonth(conversation: MyConversation, ctx: MyContextConversation) {
     const userName = ctx.from?.username || ctx.from?.first_name || "Неизвестный пользователь";
@@ -21,7 +21,7 @@ export async function selectMonth(conversation: MyConversation, ctx: MyContextCo
         hoursInMonth = response.message?.text;
 
         if (hoursInMonth && /^(?:[1-9]|[1-9]\d|[1-5]\d{2}|6[0-9]{2}|7[0-4][0-4])$/.test(hoursInMonth)) {
-            await addDataToSheet(userName, userLog, [hoursInMonth], selectedMonth); // Передаем месяц
+            await addDataToMonthSheet(userName, userLog, [hoursInMonth], selectedMonth); // Передаем месяц
             await ctx.reply(`Вы ввели: ${hoursInMonth}. Данные записаны в таблицу!`);
             break;
         } else {
