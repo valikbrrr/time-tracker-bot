@@ -1,9 +1,8 @@
 // src/conversations/createNewProject
 import { MyConversation, MyContextConversation } from "../myContext";
 import { InlineKeyboard } from "grammy";
-import { authenticate } from "../googleSheets/addMonthTable";
+import { authenticate } from "../googleSheets/authenticate";
 import { addDataToProjectSheet } from "../googleSheets/addProjectTable"; // Импортируйте функцию для записи данных
-import { log } from "console";
 
 export async function createNewProject(conversation: MyConversation, ctx: MyContextConversation) {
 
@@ -19,41 +18,33 @@ export async function createNewProject(conversation: MyConversation, ctx: MyCont
         reply_markup: inlineKeyboard
     });
     
-    // Создание нового листа в таблице
-    // const doc = await authenticate();
-    // await doc.loadInfo();
-    // await doc.addSheet({ title: projectName }); // Создаем новый лист с названием проекта
-    
-    const callbackQuery = await conversation.waitForCallbackQuery(["nextStepCreate", "BackToCreateProject"]);
+    const callbackQuery = await conversation.waitForCallbackQuery(["nextStepCreateProject", "BackToCreateProject"]);
     if (callbackQuery.callbackQuery.data === "nextStepCreateProject") {
-        await callbackQuery.answerCallbackQuery();
-        await ctx.reply("Какое кол-во часов вы работали над этим проектом?⏰");
-        
-        let hoursOfNewProj: string | undefined;
-        
-        while (true) {
-            const response = await conversation.wait();
-            hoursOfNewProj = response.message?.text;
-            
-            if (hoursOfNewProj && /^(?:[1-9]|[1-9]\d|[1-5]\d{2}|6[0-9]{2}|7[0-4][0-4])$/.test(hoursOfNewProj)) {
-                break;
-            } else {
-                await ctx.reply(`Кол-во часов можно ввести в промежутке от 1 до 744.`);
-            }
-        }
-        
-        if (!projectName) {
-            await ctx.reply("Название проекта не может быть пустым. Пожалуйста, введите заново:");
-            return createNewProject(conversation, ctx); // Запросите название снова
-        }
-        
-        // Запись данных в новый лист
-        await addDataToProjectSheet(projectName, "Запись часов", [hoursOfNewProj]);
-        await ctx.reply(`Вы ввели: ${hoursOfNewProj}. Это всё, спасибо!`);
+
+        const inlineKeyboardTwo = new InlineKeyboard()
+        .text("Открыть список проектов", "callbackOpenProjectList")
+        // await callbackQuery.answerCallbackQuery();
+
+        const NewCallbackQuery = callbackQuery.callbackQuery;
+
+        if (!NewCallbackQuery || !NewCallbackQuery.message) {
+            await ctx.reply("Ошибка: не удалось получить данные сообщения.");
+            return;
+        } 
+
+        // console.log(NewCallbackQuery);
+        const chatId = NewCallbackQuery.message?.chat.id;
+        const messageId = NewCallbackQuery.message?.message_id;
+
+        await ctx.api.editMessageText(chatId, messageId, " Вы создали новый проект, теперь вы можете открыть список проектов и добавить часы в свой проект", {
+            reply_markup: inlineKeyboardTwo
+        })
+
+        const doc = await authenticate(process.env.PROJECT_SHEET_ID as string);
+        await doc.loadInfo();
+        await doc.addSheet({ title: projectName });
+
     } else if (callbackQuery.callbackQuery.data === "BackToCreateProject") {
-
-        console.log(callbackQuery.callbackQuery);
-
 
         const NewCallbackQuery = callbackQuery.callbackQuery;
         
@@ -62,9 +53,7 @@ export async function createNewProject(conversation: MyConversation, ctx: MyCont
             return;
         } 
 
-
         try {
-           
             await callbackQuery.answerCallbackQuery();
             const chatId = NewCallbackQuery.message.chat.id;
             const messageId = NewCallbackQuery.message.message_id;

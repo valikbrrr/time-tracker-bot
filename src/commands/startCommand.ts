@@ -10,3 +10,4 @@ export const startCommand = async (ctx: Context) => {
     reply_markup: choiceDirection,
   });
 };
+

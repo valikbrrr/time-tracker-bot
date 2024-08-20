@@ -24,7 +24,7 @@ import { callbackMonthList } from "./monthBranch/callbackMonthList";
 import { callbackBackToMonth } from "./monthBranch/callbackBackToMonth";
 import { monthCallbacks, openMonthList } from "./monthBranch/openMonthList";
 import cron from "node-cron"
-import { authenticate } from "./googleSheets/addMonthTable";
+import { authenticate } from "./googleSheets/authenticate";
 import { currentMonth } from "./utils/currentMonth";
 import { currentYear } from "./utils/currentYear";
 
@@ -92,8 +92,12 @@ bot.callbackQuery("nextStepMonth", async (ctx) => {
   await ctx.answerCallbackQuery()
 })
 
-bot.callbackQuery([...monthCallbacks], callbackMonthList)
+bot.callbackQuery("callbackOpenProjectList", openProjectList) 
 
+
+bot.callbackQuery([...monthCallbacks], callbackMonthList, async (ctx) => {
+  await ctx.answerCallbackQuery()
+})
 
 
 bot.catch((err) => {
@@ -115,10 +119,9 @@ cron.schedule('0 0 1 * *', async () => {
       let month = months[2]
       let year = currentYear();
       console.log("Cron job executed");
-      const doc = await authenticate();
+      const doc = await authenticate(process.env.MONTHS_SHEET_ID as string);
       await doc.loadInfo();
       await doc.addSheet({ title: `${month} ${year}` });
-      console.log("this work!");
   } catch (error) {
       console.error("Error");
   }

@@ -15,4 +15,4 @@ export const openMonthList = async (ctx: Context) => {
     });
 };
 
-export const monthCallbacks = [months[0], months[1], months[2],];
+export const monthCallbacks = [months[0], months[1], months[2]];
