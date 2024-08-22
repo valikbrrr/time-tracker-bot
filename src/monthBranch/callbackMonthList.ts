@@ -10,10 +10,10 @@ export const callbackMonthList = async (ctx: MyContext) => {
     } 
 
     let selectedMonth = callbackQuery.data; // Сохраняем выбранный месяц
-    ctx.session.selectedMonth = selectedMonth; 
+    ctx.session.selected = selectedMonth; 
 
     const inlineKeyboard = new InlineKeyboard()
-        .text("Да, продолжить", "confirmMonth").row()
+        .text("Да, продолжить", "nextStepMonth").row()
         .text("< Вернуться к выбору месяца", "backToMonths");
     await ctx.api.editMessageText(callbackQuery.message.chat.id, callbackQuery.message.message_id, `Вы выбрали месяц: ${selectedMonth}`, {
         reply_markup: inlineKeyboard,

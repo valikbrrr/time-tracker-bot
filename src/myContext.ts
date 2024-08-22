@@ -8,7 +8,7 @@ import { HydrateFlavor } from "@grammyjs/hydrate";
 
 // Определяем тип сессии
 export type MySession = {
-    selectedMonth?: string;
+    selected?: string;
 };
 
 // Обновляем тип контекста, добавляя поддержку сессий

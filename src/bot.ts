@@ -1,5 +1,5 @@
 // src/bot.ts
-import {Bot, GrammyError, HttpError, session } from "grammy";
+import {Bot, Context, GrammyError, HttpError, session } from "grammy";
 import {
     conversations,
     createConversation,
@@ -18,15 +18,16 @@ import { viewHoursMonth } from "./monthBranch/viewHoursMonth";
 import { selectAddInProject } from "./projectBranch/selectAddInProject";
 import { viewHoursProject } from "./projectBranch/viewHoursProject";
 import { openProjectList } from "./projectBranch/openProjectList";
-// import { callbackProjectList } from "./projectBranch/callbackProjectList";
+import { callbackProjectList } from "./projectBranch/callbackProjectList";
 import { callbackBackToProject } from "./projectBranch/callbackBackToProject";
 import { callbackMonthList } from "./monthBranch/callbackMonthList";
 import { callbackBackToMonth } from "./monthBranch/callbackBackToMonth";
-import { monthCallbacks, openMonthList } from "./monthBranch/openMonthList";
+import { openMonthList } from "./monthBranch/openMonthList";
 import cron from "node-cron"
 import { authenticate } from "./googleSheets/authenticate";
 import { currentMonth } from "./utils/currentMonth";
 import { currentYear } from "./utils/currentYear";
+import { existsProject } from "./utils/existsProject";
 
 const bot = new Bot<MyContext>(process.env.TELEGRAM_TOKEN || "");
 
@@ -68,36 +69,40 @@ bot.hears("Создать новый проект", async (ctx) => {
   await ctx.conversation.enter(`createNewProject`)
 })
 
-// bot.callbackQuery(["project-1", "project-2", "project-3", "project-4"], callbackProjectList);
+bot.callbackQuery("callbackOpenProjectList", openProjectList) 
 
 bot.callbackQuery("nextStepProject", async (ctx) => {
-  await ctx.conversation.enter("selectProject");
-  await ctx.answerCallbackQuery()
-})
+  const selectedProject = ctx.session.selected;
+  if (selectedProject) {
+      await ctx.conversation.enter("selectProject");
+      await ctx.answerCallbackQuery();
+  } else {
+    console.log("не существует selectedProject");
+  }
+});
 
 bot.callbackQuery("backToProjects", callbackBackToProject)
 
-bot.callbackQuery("confirmMonth", async (ctx) => {
-  const selectedMonth = ctx.session.selectedMonth;
+
+bot.callbackQuery("nextStepMonth", async (ctx) => {
+  const selectedMonth = ctx.session.selected;
   if (selectedMonth) {
       await ctx.conversation.enter("selectMonth");
       await ctx.answerCallbackQuery();
+  } else {
+    console.log("не существует selectedMonth");
   }
 });
 
 bot.callbackQuery("backToMonths", callbackBackToMonth)
 
-bot.callbackQuery("nextStepMonth", async (ctx) => {
-  await ctx.conversation.enter("selectMonth");
-  await ctx.answerCallbackQuery()
-})
 
-bot.callbackQuery("callbackOpenProjectList", openProjectList) 
+bot.callbackQuery(/project_/, callbackProjectList)
 
 
-bot.callbackQuery([...monthCallbacks], callbackMonthList, async (ctx) => {
-  await ctx.answerCallbackQuery()
-})
+let months: string[] = []
+months = currentMonth()
+bot.callbackQuery([...months], callbackMonthList)
 
 
 bot.catch((err) => {

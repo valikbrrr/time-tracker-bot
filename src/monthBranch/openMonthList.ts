@@ -2,9 +2,9 @@
 import { Context, InlineKeyboard } from "grammy"
 import { currentMonth } from "../utils/currentMonth";
 
-let months: string[] = []
 
 export const openMonthList = async (ctx: Context) => {
+    let months: string[] = []
     months = currentMonth()
     const inlineKeyboard = new InlineKeyboard()
         .text(months[0], months[0])
@@ -13,6 +13,6 @@ export const openMonthList = async (ctx: Context) => {
     await ctx.reply("Выберите месяц из списка:", {
         reply_markup: inlineKeyboard
     });
+    return months
 };
 
-export const monthCallbacks = [months[0], months[1], months[2]];

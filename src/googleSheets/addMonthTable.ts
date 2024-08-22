@@ -13,8 +13,7 @@ export const addDataToMonthSheet = async (name: string, log: string, hours: stri
         const doc = await authenticate(monthSheetId);
         await doc.loadInfo();
         const sheet = doc.sheetsByTitle[`${month} ${year}`]; 
-        console.log(`${month} ${year}`);
-        
+
         await sheet.addRow({
             Name: name,
             Log: log,

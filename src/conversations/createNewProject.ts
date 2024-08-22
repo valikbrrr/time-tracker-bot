@@ -2,7 +2,6 @@
 import { MyConversation, MyContextConversation } from "../myContext";
 import { InlineKeyboard } from "grammy";
 import { authenticate } from "../googleSheets/authenticate";
-import { addDataToProjectSheet } from "../googleSheets/addProjectTable"; // Импортируйте функцию для записи данных
 
 export async function createNewProject(conversation: MyConversation, ctx: MyContextConversation) {
 
@@ -42,7 +41,8 @@ export async function createNewProject(conversation: MyConversation, ctx: MyCont
 
         const doc = await authenticate(process.env.PROJECT_SHEET_ID as string);
         await doc.loadInfo();
-        await doc.addSheet({ title: projectName });
+        const newSheet = await doc.addSheet({ title: projectName });
+        newSheet.setHeaderRow(["Name", "Log", "Hours"]);
 
     } else if (callbackQuery.callbackQuery.data === "BackToCreateProject") {
 

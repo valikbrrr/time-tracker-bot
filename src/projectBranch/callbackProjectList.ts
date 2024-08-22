@@ -1,18 +1,24 @@
-// import { Context, InlineKeyboard } from "grammy"
+import { Context, InlineKeyboard } from "grammy"
+import { MyContext } from "../myContext";
 
-// export const callbackProjectList = async (ctx: Context) => {
-//     const callbackQuery = ctx.callbackQuery;
+export const callbackProjectList = async (ctx: MyContext) => {
+    const callbackQuery = ctx.callbackQuery;
 
-//     if (!callbackQuery || !callbackQuery.message) {
-//         return; // Если нет callbackQuery или сообщения, выходим
-//     }
+    if (!callbackQuery || !callbackQuery.message) {
+        return; // Если нет callbackQuery или сообщения, выходим
+    }
 
-//     const inlineKeyboard = new InlineKeyboard()
-//         .text("Да, продолжить", "nextStepProject").row()
-//         .text("< Вернуться к выбору", "backToProjects");
+    let selectedProject = callbackQuery.data
+    ctx.session.selected = selectedProject
+
+    const inlineKeyboard = new InlineKeyboard()
+        .text("Да, продолжить", "nextStepProject").row()
+        .text("< Вернуться к выбору", "backToProjects");
+
     
-//     await ctx.api.editMessageText(callbackQuery.message.chat.id, callbackQuery.message.message_id, `Вы выбрали: ${callbackQuery.data}`, {
-//         reply_markup: inlineKeyboard,
-//     });
-//     await ctx.answerCallbackQuery();
-// };
+    await ctx.api.editMessageText(callbackQuery.message.chat.id, callbackQuery.message.message_id, `Вы выбрали: ${ctx.callbackQuery?.data?.substring(8)}`, {
+        reply_markup: inlineKeyboard,
+    });
+    
+    await ctx.answerCallbackQuery();
+};

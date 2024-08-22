@@ -3,9 +3,10 @@ import { MyConversation, MyContextConversation } from "../myContext";
 import { addDataToMonthSheet } from "../googleSheets/addMonthTable";
 
 export async function selectMonth(conversation: MyConversation, ctx: MyContextConversation) {
+    
     const userName = ctx.from?.username || ctx.from?.first_name || "Неизвестный пользователь";
     const userLog = ctx.from?.id ? ctx.from.id.toString() : "Неизвестный логин";
-    const selectedMonth = ctx.session.selectedMonth; // Получаем выбранный месяц
+    const selectedMonth = ctx.session.selected; // Получаем выбранный месяц
 
     if (!selectedMonth) {
         await ctx.reply("Ошибка: выбранный месяц не определён. Пожалуйста, попробуйте снова.");

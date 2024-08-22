@@ -1,5 +1,4 @@
 // src/googleSheets.ts
-import { currentYear } from '../utils/currentYear';
 import { authenticate } from './authenticate';
 
 const projectSheetId = process.env.PROJECT_SHEET_ID as string; // ID вашей таблицы
@@ -7,12 +6,11 @@ const projectSheetId = process.env.PROJECT_SHEET_ID as string; // ID вашей 
 authenticate(projectSheetId)
 
 // Функция для добавления данных в таблицу
-export const addDataToProjectSheet = async (name: string, log: string, hours: string[]) => {
-    let year = currentYear()
+export const addDataToProjectSheet = async (name: string, log: string, hours: string[], selectedProject: string) => {
     try {
         const doc = await authenticate(projectSheetId);
         await doc.loadInfo();
-        const sheet = doc.sheetsByTitle[`q ${year} q`]; 
+        const sheet = doc.sheetsByTitle[selectedProject]; 
         
         await sheet.addRow({
             Name: name,
