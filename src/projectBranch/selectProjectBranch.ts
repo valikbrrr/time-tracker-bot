@@ -5,6 +5,7 @@ export const selectProjectBranch = async (ctx: Context) => {
     const timeProject = new Keyboard()
       .text("Добавить часы за проект").row()
       .text("Посмотреть ранее введённые часы в проектах")
+      .oneTime()
     await ctx.reply("Вы можете добавить часы😊", {
       reply_markup:  timeProject
     })

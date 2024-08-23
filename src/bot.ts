@@ -27,11 +27,15 @@ import cron from "node-cron"
 import { authenticate } from "./googleSheets/authenticate";
 import { currentMonth } from "./utils/currentMonth";
 import { currentYear } from "./utils/currentYear";
-import { existsProject } from "./utils/existsProject";
+import { selectProjectForView } from "./projectBranch/selectProjectForView";
+import { dbConnection } from "./db";
 
 const bot = new Bot<MyContext>(process.env.TELEGRAM_TOKEN || "");
 
+dbConnection()
+
 bot.use(accessControl);
+
 registerCommands(bot);
 
 bot.use((ctx, next) => {
@@ -61,6 +65,8 @@ bot.hears("Посмотреть ранее введённые часы за ме
 bot.hears("Добавить часы за проект", selectAddInProject)
 
 bot.hears("Посмотреть ранее введённые часы в проектах", viewHoursProject)
+
+bot.callbackQuery(/viewProject_/, selectProjectForView)
 
 bot.hears("Открыть список проектов", openProjectList)
 

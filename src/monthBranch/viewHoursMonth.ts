@@ -1,10 +1,7 @@
-import { Context, Keyboard } from "grammy"
+import { Context} from "grammy"
+import { openProjectList } from "../projectBranch/openProjectList"
 
 export const viewHoursMonth = async (ctx: Context) => {
-    const inputHistoryMonth = new Keyboard()
-      .text("Ещё думаем над этим...🤔")
-      .oneTime()
-    await ctx.reply("Тут мы ещё не решили", {
-      reply_markup:  inputHistoryMonth
-    })
+  openProjectList(ctx)
+  await ctx.reply("Выберите проект, в котором вы хотите узнать количество часов")
 }

@@ -1,10 +1,18 @@
-import { Context, Keyboard } from "grammy"
+import { Context, InlineKeyboard} from "grammy"
+import { existsProject } from "../utils/existsProject";
 
 export const viewHoursProject = async (ctx: Context) => {
-    const inputHistoryMonth = new Keyboard()
-      .text("Ещё думаем над этим...🤔")
-      .oneTime()
-    await ctx.reply("Тут мы ещё не решили", {
-      reply_markup:  inputHistoryMonth
+  let projectList:string[] = []
+  projectList = await existsProject(); 
+  const inlineKeyboard = new InlineKeyboard()
+
+    projectList.forEach((project, index) => {
+      inlineKeyboard.text(project, `viewProject_${project}`)
+      if ((index + 1) % 3 === 0) {
+        inlineKeyboard.row()
+      }
     })
+  await ctx.reply("Выберите проект для просмотра часов", {
+    reply_markup: inlineKeyboard
+  })
 }

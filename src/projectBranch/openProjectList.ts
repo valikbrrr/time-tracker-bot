@@ -17,6 +17,8 @@ export const openProjectList = async (ctx: Context) => {
   await ctx.reply("Выберите ваш проект", {
     reply_markup: inlineKeyboard
   })
-  await ctx.answerCallbackQuery();// ????
+  if (ctx.callbackQuery) {
+    await ctx.answerCallbackQuery();
+  }
 }
 

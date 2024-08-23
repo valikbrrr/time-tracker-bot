@@ -11,7 +11,6 @@ export const callbackBackToProject = async (ctx: Context) => {
     let projectList:string[] = []
     projectList = await existsProject(); 
     const inlineKeyboard = new InlineKeyboard()
-    // console.log("fffffffff");
     
   
       projectList.forEach((project, index) => {

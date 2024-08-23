@@ -5,7 +5,6 @@ const monthSheetId = process.env.MONTHS_SHEET_ID as string; // ID вашей т�
 
 authenticate(monthSheetId)
 
-// Функция для добавления данных в таблицу
 export const addDataToMonthSheet = async (name: string, log: string, hours: string[], month: string) => {
 
     let year = currentYear()
