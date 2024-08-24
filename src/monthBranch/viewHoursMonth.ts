@@ -1,7 +1,14 @@
-import { Context} from "grammy"
-import { openProjectList } from "../projectBranch/openProjectList"
+import { Context, InlineKeyboard} from "grammy"
+import { currentMonth } from "../utils/currentMonth"
 
 export const viewHoursMonth = async (ctx: Context) => {
-  openProjectList(ctx)
-  await ctx.reply("Выберите проект, в котором вы хотите узнать количество часов")
+  let months: string[] = []
+  months = currentMonth()
+  const inlineKeyboard = new InlineKeyboard()
+      .text(months[0], `viewMonth_${months[0]}`)
+      .text(months[1], `viewMonth_${months[1]}`)
+      .text(months[2], `viewMonth_${months[2]}`)
+  await ctx.reply("Выберите месяц для просмотра часов", {
+    reply_markup: inlineKeyboard
+  })
 }

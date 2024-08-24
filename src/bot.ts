@@ -30,6 +30,7 @@ import { currentYear } from "./utils/currentYear";
 import { selectProjectForView } from "./projectBranch/selectProjectForView";
 import { dbConnection } from "./db";
 import { timeTrackerMonthModel } from "./db/modelMonth";
+import { selectMonthForView } from "./monthBranch/selectMonthForView";
 
 const bot = new Bot<MyContext>(process.env.TELEGRAM_TOKEN || "");
 
@@ -68,6 +69,8 @@ bot.hears("Добавить часы за проект", selectAddInProject)
 bot.hears("Посмотреть ранее введённые часы в проектах", viewHoursProject)
 
 bot.callbackQuery(/viewProject_/, selectProjectForView)
+
+bot.callbackQuery(/viewMonth_/, selectMonthForView)
 
 bot.hears("Открыть список проектов", openProjectList)
 
@@ -126,7 +129,6 @@ bot.catch((err) => {
 });
 
 
-//&&&&&&&&&&&&&
 cron.schedule('0 0 1 * *', async () => {
   try {
       let months = currentMonth() 
