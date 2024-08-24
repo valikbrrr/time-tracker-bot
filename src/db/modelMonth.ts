@@ -1,13 +1,14 @@
 import mongoose from "mongoose";
 
-const timeTrackerSchema = new mongoose.Schema({
-    name: {type: String},
-    id: {type: Number},
-    hours: {type: Number}
+const timeTrackerMonthSchema = new mongoose.Schema({
+    monthAndYear: {type: String},
+    data: [{
+        name: {type: String},
+        id: {type: Number},
+        hours: {type: Number}
+    }]
 });
 
-
-
-export const timeTrackerModel = mongoose.model("timeTracker", timeTrackerSchema);
+export const timeTrackerMonthModel = mongoose.model("timeTrackerMonth", timeTrackerMonthSchema);
 
 // FIND

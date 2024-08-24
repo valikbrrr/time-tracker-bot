@@ -29,6 +29,7 @@ import { currentMonth } from "./utils/currentMonth";
 import { currentYear } from "./utils/currentYear";
 import { selectProjectForView } from "./projectBranch/selectProjectForView";
 import { dbConnection } from "./db";
+import { timeTrackerMonthModel } from "./db/modelMonth";
 
 const bot = new Bot<MyContext>(process.env.TELEGRAM_TOKEN || "");
 
@@ -124,6 +125,8 @@ bot.catch((err) => {
   }
 });
 
+
+//&&&&&&&&&&&&&
 cron.schedule('0 0 1 * *', async () => {
   try {
       let months = currentMonth() 
@@ -132,7 +135,8 @@ cron.schedule('0 0 1 * *', async () => {
       console.log("Cron job executed");
       const doc = await authenticate(process.env.MONTHS_SHEET_ID as string);
       await doc.loadInfo();
-      await doc.addSheet({ title: `${month} ${year}` });
+      await doc.addSheet({ title: `${month} ${year}qqq` });
+      timeTrackerMonthModel.create({monthAndYear: `${month} ${year}`, data: []})
   } catch (error) {
       console.error("Error");
   }
