@@ -28,8 +28,6 @@ export const addDataToMonthSheet = async (name: string, log: string, hours: stri
 
             for (const entry of foundMonth.data) {
                 console.log("for сущ");
-                console.log(entry.name);
-                console.log(name);
 
                 if (entry.name === name) {
                     console.log("имя совпало");
