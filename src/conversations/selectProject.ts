@@ -1,6 +1,7 @@
 import { MyConversation, MyContextConversation } from "../myContext";
 import { addDataToProjectSheet } from "../googleSheets/addProjectTable";
 import { Keyboard } from "grammy";
+import { timeTrackerProjModel } from "../db/modelProject";
 
 export async function selectProject(conversation: MyConversation, ctx: MyContextConversation) {
 
@@ -24,6 +25,14 @@ export async function selectProject(conversation: MyConversation, ctx: MyContext
 
         if (hoursOfProject && /^(?:[1-9]|[1-9]\d|[1-5]\d{2}|6[0-9]{2}|7[0-4][0-4])$/.test(hoursOfProject)) {
             await addDataToProjectSheet(userName, userLog, [hoursOfProject], selectedProject)
+
+            const mainArr = await timeTrackerProjModel.findOne({project: `${selectProject}`})
+
+            const updateArr = mainArr?.data
+            updateArr?.push({name: userName, id: userLog, hours: Number(hoursOfProject)})
+
+            await timeTrackerProjModel.updateOne({monthAndYear: `${selectProject}`}, {data: updateArr})
+
             const choiceDirection = new Keyboard()
             .text("Учёт времени по месяцам").row()
             .text("Учёт времени по проектам");

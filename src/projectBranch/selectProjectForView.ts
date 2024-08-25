@@ -1,4 +1,3 @@
-import { sheets } from "googleapis/build/src/apis/sheets";
 import { authenticate } from "../googleSheets/authenticate";
 import { MyContext } from "../myContext";
 
@@ -21,15 +20,19 @@ export const selectProjectForView = async (ctx: MyContext) => {
         const rows = await sheet.getRows(); // Получаем строки из листа
 
         // Извлечение данных
-            rows.filter((row) => {
+        const userHours = rows.filter((row) => {
             const name = row.get('Name');
             const hours = row.get('Hours');
-            if (name === userName) {
-                let newHours = hours
-                console.log(`Ваши часы ${newHours}`);
-                ctx.reply(`Ваши часы ${newHours}`);
-            }
-        })
+            return name === userName ? hours : null; // Возвращаем часы, если имя совпадает
+        });
+
+        if (userHours.length > 0) {
+            const newHours = userHours.map(row => row.get('Hours')).join(", ");
+            console.log(`Ваши часы в проекте "${selectedProject}": ${newHours}`);
+            await ctx.reply(`Ваши часы в проекте "${selectedProject}": ${newHours}`);
+        } else {
+            await ctx.reply(`Данные не найдены для пользователя ${userName}.`);
+        }
     }
     await ctx.answerCallbackQuery();
-}
+};
