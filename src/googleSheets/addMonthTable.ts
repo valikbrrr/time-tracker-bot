@@ -2,21 +2,26 @@ import { timeTrackerMonthModel } from '../db/modelMonth';
 import { currentYear } from '../utils/currentYear';
 import { authenticate } from './authenticate';
 
-const monthSheetId = process.env.MONTH_SHEET_ID as string; // ID вашей таблицы
-
+const monthSheetId = process.env.MONTH_SHEET_ID as string;
 authenticate(monthSheetId);
 
 export const addDataToMonthSheet = async (name: string, log: string, hours: string[], month: string) => {
     const year = currentYear();
     try {
+        console.log("work");
         const doc = await authenticate(monthSheetId);
         await doc.loadInfo();
-        const sheet = doc.sheetsByTitle[`${month} ${year}`]; 
+        const sheet = doc.sheetsByTitle[`${month} ${year}`];
+        console.log(`selectedProject - ${month} ${year}`);
+         
         
         // Fetch the month data
         const foundMonth = await timeTrackerMonthModel.findOne({ monthAndYear: `${month} ${year}` });
+        console.log(`foundMonth - ${foundMonth}`);
+        
 
         if (foundMonth && foundMonth.data.length > 0) {
+            console.log(`Найден месяц: ${foundMonth}`);
             let rowIndexToDelete: number | null = null;
 
             const rows = await sheet.getRows(); // Получаем строки как GoogleSpreadsheetRow

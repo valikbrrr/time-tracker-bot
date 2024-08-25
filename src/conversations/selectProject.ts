@@ -26,19 +26,25 @@ export async function selectProject(conversation: MyConversation, ctx: MyContext
         if (hoursOfProject && /^(?:[1-9]|[1-9]\d|[1-5]\d{2}|6[0-9]{2}|7[0-4][0-4])$/.test(hoursOfProject)) {
             await addDataToProjectSheet(userName, userLog, [hoursOfProject], selectedProject)
 
-            const mainArr = await timeTrackerProjModel.findOne({project: `${selectProject}`})
+            const mainArr = await timeTrackerProjModel.findOne({project: `${selectedProject}`})
 
+            // console.log(`mainArr - ${mainArr}`);
+            // console.log(`selectProject - ${selectedProject}`);
+            
             const updateArr = mainArr?.data
             updateArr?.push({name: userName, id: userLog, hours: Number(hoursOfProject)})
+            // console.log(`updateArr - ${updateArr}`);
 
-            await timeTrackerProjModel.updateOne({monthAndYear: `${selectProject}`}, {data: updateArr})
+            await timeTrackerProjModel.updateOne({project: `${selectedProject}`}, {data: updateArr})
 
             const choiceDirection = new Keyboard()
             .text("Учёт времени по месяцам").row()
             .text("Учёт времени по проектам");
+
             await ctx.reply(`Вы ввели: ${hoursOfProject}. Данные записаны в таблицу!`, {
                 reply_markup: choiceDirection
             });
+            break
         } else {
             await ctx.reply(`Кол-во часов можно ввести в промежутке от 1 до 744.`);
         }

@@ -81,6 +81,8 @@ bot.hears("Создать новый проект", async (ctx) => {
 
 bot.callbackQuery("callbackOpenProjectList", openProjectList) 
 
+bot.callbackQuery(/project_/, callbackProjectList)
+
 bot.callbackQuery("nextStepProject", async (ctx) => {
   const selectedProject = ctx.session.selected;
   if (selectedProject) {
@@ -106,8 +108,6 @@ bot.callbackQuery("nextStepMonth", async (ctx) => {
 
 bot.callbackQuery("backToMonths", callbackBackToMonth)
 
-
-bot.callbackQuery(/project_/, callbackProjectList)
 
 
 let months: string[] = []
@@ -135,9 +135,10 @@ cron.schedule('0 0 1 * *', async () => {
       let month = months[2]
       let year = currentYear();
       console.log("Cron job executed");
-      const doc = await authenticate(process.env.MONTHS_SHEET_ID as string);
+      const doc = await authenticate(process.env.MONTH_SHEET_ID as string);
       await doc.loadInfo();
-      await doc.addSheet({ title: `${month} ${year}qqq` });
+      const newSheet = await doc.addSheet({ title: `${month} ${year}new` });
+      newSheet.setHeaderRow(["Name", "Log", "Hours"]);
       timeTrackerMonthModel.create({monthAndYear: `${month} ${year}`, data: []})
   } catch (error) {
       console.error("Error");
