@@ -1,3 +1,4 @@
+import { Keyboard } from "grammy";
 import { authenticate } from "../googleSheets/authenticate";
 import { MyContext } from "../myContext";
 
@@ -35,4 +36,11 @@ export const selectProjectForView = async (ctx: MyContext) => {
         }
     }
     await ctx.answerCallbackQuery();
+    const choiceDirection = new Keyboard()
+    .text("Учёт времени по месяцам").row()
+    .text("Учёт времени по проектам");
+
+    await ctx.reply(`Хотите сделать что-то ещё?`, {
+        reply_markup: choiceDirection
+    });
 };

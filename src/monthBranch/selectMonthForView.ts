@@ -1,3 +1,4 @@
+import { Keyboard } from "grammy";
 import { authenticate } from "../googleSheets/authenticate";
 import { MyContext } from "../myContext";
 import { currentYear } from "../utils/currentYear";
@@ -47,6 +48,13 @@ export const selectMonthForView = async (ctx: MyContext) => {
         console.error("Ошибка при получении данных:", error);
         await ctx.reply("Произошла ошибка при получении данных. Пожалуйста, попробуйте позже.");
     }
-
     await ctx.answerCallbackQuery();
+    const choiceDirection = new Keyboard()
+    .text("Учёт времени по месяцам").row()
+    .text("Учёт времени по проектам");
+
+    await ctx.reply(`Хотите сделать что-то ещё?`, {
+        reply_markup: choiceDirection
+    });
+
 }
