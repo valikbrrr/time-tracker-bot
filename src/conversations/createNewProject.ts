@@ -11,7 +11,7 @@ export async function createNewProject(conversation: MyConversation, ctx: MyCont
         .text("Изменить название", "BackToCreateProject");
         
     const nameOfNewProject = await conversation.wait();
-    const projectName = nameOfNewProject.message?.text; // Это может быть undefined
+    const projectName = nameOfNewProject.message?.text; 
 
     // Проверка на undefined
     await ctx.reply(`Поздравляю! Вы создали новый проект под названием: "${projectName}" 🥳`, {

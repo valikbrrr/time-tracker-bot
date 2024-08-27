@@ -31,6 +31,9 @@ import { selectProjectForView } from "./projectBranch/selectProjectForView";
 import { dbConnection } from "./db";
 import { timeTrackerMonthModel } from "./db/modelMonth";
 import { selectMonthForView } from "./monthBranch/selectMonthForView";
+import { addAdmin } from "./changeWhitelist/addAdmin";
+import { addUser } from "./changeWhitelist/addUser";
+import { removeUser } from "./changeWhitelist/removeUser";
 
 const bot = new Bot<MyContext>(process.env.TELEGRAM_TOKEN || "");
 
@@ -54,6 +57,31 @@ bot.use(hydrate())
 bot.use(createConversation(selectMonth));
 bot.use(createConversation(selectProject));
 bot.use(createConversation(createNewProject));
+bot.use(createConversation(addAdmin)),
+bot.use(createConversation(addUser)),
+bot.use(createConversation(removeUser)),
+
+
+bot.hears("Добавить администратора", async (ctx) => {
+  if (ctx.isAdmin) {
+  await ctx.reply("Напишите id нового администратора")
+  await ctx.conversation.enter(`addAdmin`)
+  }
+})
+
+bot.hears("Добавить пользователя", async (ctx) => {
+  if (ctx.isAdmin) {
+  await ctx.reply(`Напишите id нового пользователя`)
+  await ctx.conversation.enter(`addUser`)
+  }
+})
+
+bot.hears("Удалить пользователя", async (ctx) => {
+  if (ctx.isAdmin) {
+  await ctx.reply(`Напишите id пользователя, которого нужно удалить`)
+  await ctx.conversation.enter(`removeUser`)
+  }
+})
 
 
 bot.hears("Учёт времени по месяцам", selectMonthBranch)

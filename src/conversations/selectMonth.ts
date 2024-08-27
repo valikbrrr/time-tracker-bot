@@ -29,11 +29,9 @@ export async function selectMonth(conversation: MyConversation, ctx: MyContextCo
             await addDataToMonthSheet(userName, userLog, [hoursInMonth], selectedMonth); // Передаем месяц
 
             const mainArr = await timeTrackerMonthModel.findOne({monthAndYear: `${selectedMonth} ${currentYear()}`})
-            // console.log(`mainArr - ${mainArr}`);
 
             const updateArr = mainArr?.data
             updateArr?.push({name: userName, id: userLog, hours: Number(hoursInMonth)})
-            // console.log(`updateArr - ${updateArr}`);
 
             await timeTrackerMonthModel.updateOne({monthAndYear: `${selectedMonth} ${currentYear()}`}, {data: updateArr})
 
