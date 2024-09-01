@@ -13,7 +13,7 @@ export async function addAdmin(conversation: MyConversation, ctx: MyContextConve
     try {
         const updateResult = await whitelistModel.updateOne(
             {},
-            { $setOnInsert: { admins: [], users: [] } },
+            { $setOnInsert: { admins: [], users: [], type: "users" } },
             { upsert: true }
         );
 

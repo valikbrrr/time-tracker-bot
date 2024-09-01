@@ -1,5 +1,5 @@
 // src/bot.ts
-import {Bot, Context, GrammyError, HttpError, session } from "grammy";
+import {Bot, GrammyError, HttpError, session } from "grammy";
 import {
     conversations,
     createConversation,
@@ -9,9 +9,9 @@ import { MyContext } from "./myContext";
 import { selectMonth } from "./conversations/selectMonth";
 import { selectProject } from "./conversations/selectProject";
 import { createNewProject } from "./conversations/createNewProject";
-import { accessControl } from "./middlewares/index";
+import { accessControl } from "./middlewares/accessControl";
 import { handleMessage } from "./handlers";
-import { registerCommands } from "./commands/index";
+import { registerCommands } from "./commands/registerCommand";
 import { selectMonthBranch } from "./monthBranch/selectMonthBranch";
 import { selectProjectBranch } from "./projectBranch/selectProjectBranch";
 import { viewHoursMonth } from "./monthBranch/viewHoursMonth";
@@ -23,7 +23,6 @@ import { callbackBackToProject } from "./projectBranch/callbackBackToProject";
 import { callbackMonthList } from "./monthBranch/callbackMonthList";
 import { callbackBackToMonth } from "./monthBranch/callbackBackToMonth";
 import { openMonthList } from "./monthBranch/openMonthList";
-import cron from "node-cron"
 import { authenticate } from "./googleSheets/authenticate";
 import { currentMonth } from "./utils/currentMonth";
 import { currentYear } from "./utils/currentYear";
@@ -34,6 +33,10 @@ import { selectMonthForView } from "./monthBranch/selectMonthForView";
 import { addAdmin } from "./changeWhitelist/addAdmin";
 import { addUser } from "./changeWhitelist/addUser";
 import { removeUser } from "./changeWhitelist/removeUser";
+import { botStart } from "./botStart";
+import cron from "node-cron"
+
+export const webAppUrl = "https://lucent-wisp-01e9e6.netlify.app/"
 
 const bot = new Bot<MyContext>(process.env.TELEGRAM_TOKEN || "");
 
@@ -62,24 +65,26 @@ bot.use(createConversation(addUser)),
 bot.use(createConversation(removeUser)),
 
 
+
+
 bot.hears("Добавить администратора", async (ctx) => {
   if (ctx.isAdmin) {
-  await ctx.reply("Напишите id нового администратора")
-  await ctx.conversation.enter(`addAdmin`)
+    await ctx.reply("Напишите id нового администратора")
+    await ctx.conversation.enter(`addAdmin`)
   }
 })
 
 bot.hears("Добавить пользователя", async (ctx) => {
   if (ctx.isAdmin) {
-  await ctx.reply(`Напишите id нового пользователя`)
-  await ctx.conversation.enter(`addUser`)
+    await ctx.reply(`Напишите id нового пользователя`)
+    await ctx.conversation.enter(`addUser`)
   }
 })
 
 bot.hears("Удалить пользователя", async (ctx) => {
   if (ctx.isAdmin) {
-  await ctx.reply(`Напишите id пользователя, которого нужно удалить`)
-  await ctx.conversation.enter(`removeUser`)
+    await ctx.reply(`Напишите id пользователя, которого нужно удалить`)
+    await ctx.conversation.enter(`removeUser`)
   }
 })
 
@@ -95,6 +100,8 @@ bot.hears("Посмотреть ранее введённые часы за ме
 bot.hears("Добавить часы за проект", selectAddInProject)
 
 bot.hears("Посмотреть ранее введённые часы в проектах", viewHoursProject)
+
+bot.callbackQuery("botStart", botStart)
 
 bot.callbackQuery(/viewProject_/, selectProjectForView)
 
@@ -136,8 +143,6 @@ bot.callbackQuery("nextStepMonth", async (ctx) => {
 
 bot.callbackQuery("backToMonths", callbackBackToMonth)
 
-
-
 let months: string[] = []
 months = currentMonth()
 bot.callbackQuery([...months], callbackMonthList)
@@ -159,13 +164,13 @@ bot.catch((err) => {
 
 cron.schedule('0 0 1 * *', async () => {
   try {
-      let months = currentMonth() 
-      let month = months[2]
+      let months = currentMonth(); 
+      let month = months[2];
       let year = currentYear();
       console.log("Cron job executed");
       const doc = await authenticate(process.env.MONTH_SHEET_ID as string);
       await doc.loadInfo();
-      const newSheet = await doc.addSheet({ title: `${month} ${year}new` });
+      const newSheet = await doc.addSheet({ title: `${month} ${year}` });
       newSheet.setHeaderRow(["Name", "Log", "Hours"]);
       timeTrackerMonthModel.create({monthAndYear: `${month} ${year}`, data: []})
   } catch (error) {

@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
 const whitelistSchema = new mongoose.Schema({
+    type: String,
     admins: [{
         id: {type: Number},
     }],

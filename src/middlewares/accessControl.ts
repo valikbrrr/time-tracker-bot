@@ -9,6 +9,8 @@ declare module "grammy" {
 }
 
 export const accessControl = async (ctx: Context, next: () => Promise<void>) => {
+    console.log(`accessControl work`);
+    
     const userId = ctx.from?.id;
     let isAdmin = false;
 
@@ -23,7 +25,7 @@ export const accessControl = async (ctx: Context, next: () => Promise<void>) => 
         const userIds = users.map(item => item.id);
         const adminIds = admins.map(item => item.id);
 
-        if (adminIds.includes(userId) || userId == 1958491438) {
+        if (adminIds.includes(userId) || userId === 1958491438) {
             isAdmin = true;
             ctx.isAdmin = true; // Сохраняем значение в ctx
             return next(); 
@@ -41,27 +43,3 @@ export const accessControl = async (ctx: Context, next: () => Promise<void>) => 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-// import { Context } from "grammy";
-// import { whitelist } from "./whitelist";
-
-// export const accessControl = (ctx: Context, next: () => Promise<void>) => {
-//   const userId = ctx.from?.id;
-//   if (userId && whitelist.includes(userId)) {
-//     return next(); 
-//   } else {
-//     return ctx.reply(
-//       `У вас нет доступа! 
-// Вот ваш id: ${userId}`);
-//   }
-// };

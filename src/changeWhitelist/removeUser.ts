@@ -15,13 +15,17 @@ export async function removeUser(conversation: MyConversation, ctx: MyContextCon
         const userList = await whitelistModel.find({})
         const users = userList[0].users
 
-        users.map(item => {
+        users.map(async(item) =>  {
             if(item.id === removeUserId) {
                 const newArr = userList[0].users.filter((el)=>el.id!==removeUserId)
-                whitelistModel.updateOne({}, {users: newArr})
+                console.log(newArr);
+                await whitelistModel.updateOne(
+                    {type: "users"},
+                    { $set: { users: newArr } }
+                )
             } 
-            return ctx.reply(`Пользователь с ID ${removeUserId} удалён`);
         })
+        return ctx.reply(`Пользователь с ID ${removeUserId} удалён`);
     } catch (error) {
         console.error(error);
         return ctx.reply("Произошла ошибка при удалении пользователя.");

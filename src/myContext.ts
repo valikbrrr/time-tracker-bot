@@ -1,5 +1,5 @@
 // src/myContext.ts
-import { Context, SessionFlavor } from "grammy";
+import { Bot, Context, SessionFlavor } from "grammy";
 import {
     type Conversation,
     type ConversationFlavor,
@@ -15,4 +15,6 @@ export type MySession = {
 export type MyContextConversation = Context & SessionFlavor<MySession> & ConversationFlavor;
 export type MyConversation = Conversation<MyContextConversation>;
 export type MyContextHydrate = HydrateFlavor<Context>;
-export type MyContext = MyContextConversation & MyContextHydrate;
+export type MyContext = Context & SessionFlavor<MySession> & {
+    bot: Bot; // Добавляем свойство bot
+} & ConversationFlavor & HydrateFlavor<Context>;
