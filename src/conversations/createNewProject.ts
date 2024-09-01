@@ -3,6 +3,7 @@ import { MyConversation, MyContextConversation } from "../myContext";
 import { InlineKeyboard } from "grammy";
 import { authenticate } from "../googleSheets/authenticate";
 import { timeTrackerProjModel } from "../db/modelProject";
+import { createProjectProvider } from "../providers/createProjectProvider";
 
 export async function createNewProject(conversation: MyConversation, ctx: MyContextConversation) {
 
@@ -40,11 +41,9 @@ export async function createNewProject(conversation: MyConversation, ctx: MyCont
             reply_markup: inlineKeyboardTwo
         })
 
-        const doc = await authenticate(process.env.PROJECT_SHEET_ID as string);
-        await doc.loadInfo();
-        const newSheet = await doc.addSheet({ title: projectName });
-        newSheet.setHeaderRow(["Name", "Log", "Hours"]);
-        timeTrackerProjModel.create({project: `${projectName}`, data: []})
+        if (projectName) {
+            createProjectProvider(projectName)
+        }
 
     } else if (callbackQuery.callbackQuery.data === "BackToCreateProject") {
 

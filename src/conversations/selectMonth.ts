@@ -4,6 +4,7 @@ import { addDataToMonthSheet } from "../googleSheets/addMonthTable";
 import { Keyboard } from "grammy";
 import { timeTrackerMonthModel } from "../db/modelMonth";
 import { currentYear } from "../utils/currentYear";
+import { addToMonth } from "../providers/addToMonth";
 
 export async function selectMonth(conversation: MyConversation, ctx: MyContextConversation) {
     
@@ -25,15 +26,7 @@ export async function selectMonth(conversation: MyConversation, ctx: MyContextCo
         hoursInMonth = response.message?.text;
 
         if (hoursInMonth && /^(?:[1-9]|[1-9]\d|[1-5]\d{2}|6[0-9]{2}|7[0-4][0-4])$/.test(hoursInMonth)) {
-
-            await addDataToMonthSheet(userName, userLog, [hoursInMonth], selectedMonth); // Передаем месяц
-
-            const mainArr = await timeTrackerMonthModel.findOne({monthAndYear: `${selectedMonth} ${currentYear()}`})
-
-            const updateArr = mainArr?.data
-            updateArr?.push({name: userName, id: userLog, hours: Number(hoursInMonth)})
-
-            await timeTrackerMonthModel.updateOne({monthAndYear: `${selectedMonth} ${currentYear()}`}, {data: updateArr})
+            addToMonth(userName, userLog, hoursInMonth, selectedMonth)
 
             const choiceDirection = new Keyboard()
             .text("Учёт времени по месяцам").row()
