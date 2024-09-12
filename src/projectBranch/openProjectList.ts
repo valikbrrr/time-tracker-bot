@@ -1,6 +1,6 @@
 // src/projectBranch/openProjectList
 import { Context, InlineKeyboard } from "grammy";
-import { existsProject } from "../utils/existsProject";
+import { existsProject } from "../providers/existsProject";
 
 
 export const openProjectList = async (ctx: Context) => {

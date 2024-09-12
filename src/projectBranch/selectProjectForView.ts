@@ -1,6 +1,7 @@
 import { Keyboard } from "grammy";
 import { authenticate } from "../googleSheets/authenticate";
 import { MyContext } from "../myContext";
+// import { viewProject } from "../providers/viewProject";
 
 export const selectProjectForView = async (ctx: MyContext) => {
     const projectSheetId = process.env.PROJECT_SHEET_ID as string;
@@ -17,19 +18,20 @@ export const selectProjectForView = async (ctx: MyContext) => {
     const doc = await authenticate(projectSheetId);
     await doc.loadInfo();
     if (selectedProject) {
-        const sheet = doc.sheetsByTitle[selectedProject];
-        const rows = await sheet.getRows(); // Получаем строки из листа
 
-        // Извлечение данных
+        // viewProject(selectedProject, userName)
+        // как передавать эту функцию для обработки из web app, если для rows нужен свой тип и тут нужен userHours.
+        // обязательно ли читать информацию с одной логикой?
+        const sheet = doc.sheetsByTitle[selectedProject];
+        const rows = await sheet.getRows(); 
         const userHours = rows.filter((row) => {
             const name = row.get('Name');
             const hours = row.get('Hours');
-            return name === userName ? hours : null; // Возвращаем часы, если имя совпадает
+            return name === userName ? hours : null; 
         });
 
         if (userHours.length > 0) {
-            const newHours = userHours.map(row => row.get('Hours')).join(", ");
-            console.log(`Ваши часы в проекте "${selectedProject}": ${newHours}`);
+            const newHours = userHours.map((row: any) => row.get('Hours')).join(", ");
             await ctx.reply(`Ваши часы в проекте "${selectedProject}": ${newHours}`);
         } else {
             await ctx.reply(`Данные не найдены для пользователя ${userName}.`);

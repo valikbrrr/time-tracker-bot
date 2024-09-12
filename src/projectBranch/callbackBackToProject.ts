@@ -1,5 +1,5 @@
 import { Context, InlineKeyboard } from "grammy"
-import { existsProject } from "../utils/existsProject";
+import { existsProject } from "../providers/existsProject";
 
 export const callbackBackToProject = async (ctx: Context) => {
     const callbackQuery = ctx.callbackQuery;

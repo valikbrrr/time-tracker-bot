@@ -21,6 +21,6 @@ export const existsProject = async () => {
             sheetNames.push(sheet.properties.title);
         } 
     });
-    
+    console.log(`sheetNames - ${sheetNames}`);
     return sheetNames;
 }

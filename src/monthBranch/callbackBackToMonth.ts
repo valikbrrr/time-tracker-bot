@@ -1,6 +1,6 @@
 // src/monthBranch/callbackBackToMonth
 import { Context, InlineKeyboard } from "grammy"
-import { currentMonth } from "../utils/currentMonth";
+import { currentMonth } from "../providers/currentMonth";
 
 export const callbackBackToMonth = async (ctx: Context) => {
     

@@ -24,7 +24,7 @@ import { callbackMonthList } from "./monthBranch/callbackMonthList";
 import { callbackBackToMonth } from "./monthBranch/callbackBackToMonth";
 import { openMonthList } from "./monthBranch/openMonthList";
 import { authenticate } from "./googleSheets/authenticate";
-import { currentMonth } from "./utils/currentMonth";
+import { currentMonth } from "./providers/currentMonth";
 import { currentYear } from "./utils/currentYear";
 import { selectProjectForView } from "./projectBranch/selectProjectForView";
 import { dbConnection } from "./db";

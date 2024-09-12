@@ -3,9 +3,9 @@ import { whitelistModel } from "../db/whitelist";
 
 export async function addUser(conversation: MyConversation, ctx: MyContextConversation) {
     const newUserId = await conversation.wait();
-    const newUser = Number(newUserId.message?.text);
+    const newUser = newUserId.message?.text;
 
-    if (!newUser || isNaN(newUser)) {
+    if (!newUser || /^-?\d+$/.test(newUser)) {
         return ctx.reply("Пожалуйста, введите корректный ID пользователя.");
     }
 
