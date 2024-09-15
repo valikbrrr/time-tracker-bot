@@ -1,10 +1,12 @@
+import { Request, Response } from "express";
 import { currentMonth } from "../providers/currentMonth";
-import { Response } from "express";
 import { existsProject } from "../providers/existsProject";
-
+import { addToMonth } from "../providers/addToMonth";
+import { AddHoursRequest } from "../interface/interfaces";
+import { viewHoursMonthProvider } from "../providers/viewHoursMonthProvider";
 
 export const getMonth = (res: Response) => {
-    const months =  currentMonth();
+    const months = currentMonth();
     return res.json(months);
 }
 
@@ -16,4 +18,20 @@ export const getProjects = async (res: Response) => {
         console.error('Ошибка при получении проектов:', error);
         res.status(500).send('Ошибка сервера');
     }
+}
+
+export const addHours = async (req: Request<{}, {}, AddHoursRequest>, res: Response) => {
+    const { userName, userLog, hoursInMonth, selectedMonth } = req.body;
+
+    try {
+        await addToMonth(userName, userLog, hoursInMonth, selectedMonth);
+        res.status(200).send('Часы успешно добавлены');
+    } catch (error) {
+        console.error('Ошибка при добавлении часов:', error);
+        res.status(500).send('Ошибка сервера');
+    }
+}
+
+export const viewHoursFromMonth = (userName: string, userSelectMonth: string) => {
+    viewHoursMonthProvider(userName, userSelectMonth)
 }
