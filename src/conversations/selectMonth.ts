@@ -6,7 +6,7 @@ import { addToMonth } from "../providers/addToMonth";
 export async function selectMonth(conversation: MyConversation, ctx: MyContextConversation) {
     
     const userName = ctx.from?.username || ctx.from?.first_name || "Неизвестный пользователь";
-    const userId = ctx.from?.id ? ctx.from.id.toString() : "Неизвестный логин";
+    const userId = ctx.from?.id ? ctx.from.id.toString() : "Неизвестный id";
     const selectedMonth = ctx.session.selected; // Получаем выбранный месяц
 
     if (!selectedMonth) {

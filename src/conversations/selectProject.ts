@@ -7,7 +7,7 @@ import { addToProject } from "../providers/addToProject";
 export async function selectProject(conversation: MyConversation, ctx: MyContextConversation) {
 
     const userName = ctx.from?.username || ctx.from?.first_name || "Неизвестный пользователь";
-    const userId = ctx.from?.id ? ctx.from.id.toString() : "Неизвестный логин";
+    const userId = ctx.from?.id ? ctx.from.id.toString() : "Неизвестный id";
     const selectedProject = ctx.session.selected?.substring(8); // Получаем выбранный проект
     
     if (!selectedProject) {
