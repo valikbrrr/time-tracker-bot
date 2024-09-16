@@ -21,10 +21,10 @@ export const getProjects = async (res: Response) => {
 }
 
 export const addHours = async (req: Request<{}, {}, AddHoursRequest>, res: Response) => {
-    const { userName, userLog, hoursInMonth, selectedMonth } = req.body;
+    const { userName, userId, hoursInMonth, selectedMonth } = req.body;
 
     try {
-        await addToMonth(userName, userLog, hoursInMonth, selectedMonth);
+        await addToMonth(userName, userId, hoursInMonth, selectedMonth);
         res.status(200).send('Часы успешно добавлены');
     } catch (error) {
         console.error('Ошибка при добавлении часов:', error);

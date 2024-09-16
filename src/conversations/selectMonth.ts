@@ -1,15 +1,12 @@
 // src/conversations/selectMonth.ts
 import { MyConversation, MyContextConversation } from "../myContext";
-import { addDataToMonthSheet } from "../googleSheets/addMonthTable";
 import { Keyboard } from "grammy";
-import { timeTrackerMonthModel } from "../db/modelMonth";
-import { currentYear } from "../utils/currentYear";
 import { addToMonth } from "../providers/addToMonth";
 
 export async function selectMonth(conversation: MyConversation, ctx: MyContextConversation) {
     
     const userName = ctx.from?.username || ctx.from?.first_name || "Неизвестный пользователь";
-    const userLog = ctx.from?.id ? ctx.from.id.toString() : "Неизвестный логин";
+    const userId = ctx.from?.id ? ctx.from.id.toString() : "Неизвестный логин";
     const selectedMonth = ctx.session.selected; // Получаем выбранный месяц
 
     if (!selectedMonth) {
@@ -26,7 +23,9 @@ export async function selectMonth(conversation: MyConversation, ctx: MyContextCo
         hoursInMonth = response.message?.text;
 
         if (hoursInMonth && /^(?:[1-9]|[1-9]\d|[1-5]\d{2}|6[0-9]{2}|7[0-4][0-4])$/.test(hoursInMonth)) {
-            addToMonth(userName, userLog, hoursInMonth, selectedMonth)
+            console.log(`1.userId - ${userId}`);
+            
+            addToMonth(userName, userId, hoursInMonth, selectedMonth)
 
             const choiceDirection = new Keyboard()
             .text("Учёт времени по месяцам").row()

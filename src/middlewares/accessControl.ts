@@ -9,7 +9,6 @@ declare module "grammy" {
 }
 
 export const accessControl = async (ctx: Context, next: () => Promise<void>) => {
-    console.log(`accessControl work`);
     
     const userId = ctx.from?.id;
     let isAdmin = false;

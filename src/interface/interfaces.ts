@@ -1,7 +1,6 @@
 export interface AddHoursRequest {
     userName: string;
-    userLog: string;
+    userId: string;
     hoursInMonth: string;
     selectedMonth: string;
-    res: Response
 }
