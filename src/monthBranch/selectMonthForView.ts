@@ -1,13 +1,12 @@
 import { Keyboard } from "grammy";
 import { authenticate } from "../googleSheets/authenticate";
 import { MyContext } from "../myContext";
-import { currentYear } from "../utils/currentYear";
 import { viewHoursMonthProvider } from "../providers/viewHoursMonthProvider";
 
 export const selectMonthForView = async (ctx: MyContext) => {
     const monthSheetId = process.env.MONTH_SHEET_ID as string;
 
-    const userName = ctx.from?.username || ctx.from?.first_name || "Неизвестный пользователь";
+    const userId = ctx.from?.id ? ctx.from.id.toString() : "Неизвестный id";
 
     const callbackQuery = ctx.callbackQuery;
     const monthData = callbackQuery?.data?.substring(10).trim();
@@ -15,7 +14,7 @@ export const selectMonthForView = async (ctx: MyContext) => {
     // Проверяем, что monthData определено и является строкой
     if (!monthData) {
         await ctx.reply("Пожалуйста, выберите месяц.");
-        return;
+        return; 
     }
 
     const userSelectMonth: string = monthData; // Присваиваем значение, зная, что оно не undefined
@@ -24,12 +23,12 @@ export const selectMonthForView = async (ctx: MyContext) => {
         const doc = await authenticate(monthSheetId);
         await doc.loadInfo();
 
-        const { userHours, hours } = await viewHoursMonthProvider(userName, userSelectMonth);
+        const { userHours, hours } = await viewHoursMonthProvider(userId, userSelectMonth);
 
         if (userHours.length > 0) {
             await ctx.reply(`Ваши часы за месяц ${userSelectMonth}: ${hours}`);
         } else {
-            await ctx.reply(`Данные не найдены для пользователя ${userName}.`);
+            await ctx.reply(`Данные не найдены для пользователя с id - ${userId}.`);
         }
     } catch (error) {
         console.error("Ошибка при получении данных:", error);
