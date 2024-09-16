@@ -7,7 +7,7 @@ import { addToProject } from "../providers/addToProject";
 export async function selectProject(conversation: MyConversation, ctx: MyContextConversation) {
 
     const userName = ctx.from?.username || ctx.from?.first_name || "Неизвестный пользователь";
-    const userLog = ctx.from?.id ? ctx.from.id.toString() : "Неизвестный логин";
+    const userId = ctx.from?.id ? ctx.from.id.toString() : "Неизвестный логин";
     const selectedProject = ctx.session.selected?.substring(8); // Получаем выбранный проект
     
     if (!selectedProject) {
@@ -25,7 +25,7 @@ export async function selectProject(conversation: MyConversation, ctx: MyContext
         hoursOfProject = response.message?.text;
 
         if (hoursOfProject && /^(?:[1-9]|[1-9]\d|[1-5]\d{2}|6[0-9]{2}|7[0-4][0-4])$/.test(hoursOfProject)) {
-           addToProject(userName, userLog, hoursOfProject, selectedProject)
+           addToProject(userName, userId, hoursOfProject, selectedProject)
 
             const choiceDirection = new Keyboard()
             .text("Учёт времени по месяцам").row()
@@ -39,4 +39,4 @@ export async function selectProject(conversation: MyConversation, ctx: MyContext
             await ctx.reply(`Кол-во часов можно ввести в промежутке от 1 до 744.`);
         }
     }
-}
+} 

@@ -1,6 +1,5 @@
 import { timeTrackerProjModel } from "../db/modelProject";
 import { authenticate } from "../googleSheets/authenticate";
-import { Response } from "express"; // Убедитесь, что вы импортируете Response
 
 export const createProjectProvider = async (projectName: string) => {
     try {
@@ -13,7 +12,7 @@ export const createProjectProvider = async (projectName: string) => {
         await doc.loadInfo();
         console.log('Создание нового листа...');
         const newSheet = await doc.addSheet({ title: projectName });
-        newSheet.setHeaderRow(["Name", "Log", "Hours"]);
+        newSheet.setHeaderRow(["Name", "Id", "Hours"]);
         
         console.log('Запись в базу данных...');
         await timeTrackerProjModel.create({ project: projectName, data: [] });

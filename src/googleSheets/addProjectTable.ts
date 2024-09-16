@@ -7,7 +7,7 @@ const projectSheetId = process.env.PROJECT_SHEET_ID as string;
 authenticate(projectSheetId);
 
 // Функция для добавления данных в таблицу
-export const addDataToProjectSheet = async (name: string, log: string, hours: string[], selectedProject: string) => {
+export const addDataToProjectSheet = async (name: string, id: string, hours: string[], selectedProject: string) => {
     try {
         
         const doc = await authenticate(projectSheetId);
@@ -22,8 +22,8 @@ export const addDataToProjectSheet = async (name: string, log: string, hours: st
 
             for (const entry of foundProject.data) {
 
-                if (entry.name === name) {
-                    rowIndexToDelete = rows.findIndex((row) => row.get('Name') === name); 
+                if (entry.id === id) {
+                    rowIndexToDelete = rows.findIndex((row) => row.get('Id') === id); 
                 }
             }
 
@@ -40,9 +40,9 @@ export const addDataToProjectSheet = async (name: string, log: string, hours: st
             const newHoursTotal = hours.reduce((sum, hour) => sum + (parseFloat(hour) || 0), 0);
             totalHours += newHoursTotal;
 
-            await sheet.addRow({
+            await sheet.addRow({ 
                 Name: name,
-                Log: log,
+                Id: id,
                 Hours: totalHours.toString(),
             });
 
@@ -50,7 +50,7 @@ export const addDataToProjectSheet = async (name: string, log: string, hours: st
             const totalHours = hours.reduce((sum, hour) => sum + (parseFloat(hour) || 0), 0);
             await sheet.addRow({
                 Name: name,
-                Log: log,
+                Id: id,
                 Hours: totalHours.toString(),
             });
         }
