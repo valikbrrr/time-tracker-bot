@@ -11,9 +11,6 @@ app.use(bodyParser.json());
 
 app.use("/api", router);
 
-console.log("work index");
-
-
 const PORT = process.env.PORT;
 
 app.listen(PORT, () => {

@@ -2,7 +2,6 @@ import { Context } from "grammy";
 import { Keyboard } from "grammy";
 
 export const botStart = async (ctx: Context) => {
-  // console.log("botStart work");
   const choiceDirection = new Keyboard()
   .text("Учёт времени по месяцам").row()
   .text("Учёт времени по проектам");

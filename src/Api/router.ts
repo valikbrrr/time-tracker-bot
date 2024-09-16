@@ -1,9 +1,10 @@
 import express from "express";
 import { getMonth, getProjects, viewHoursFromMonth } from "./controllers";
 import { addToMonth } from "../providers/addToMonth";
+import { viewHoursMonthProvider } from "../providers/viewHoursMonthProvider";
 
 const router = express.Router();
-console.log("Server file is loading...");
+console.log("router is loading...");
 
 router.get("/current-month", (req, res) => {
     getMonth(res);
@@ -18,9 +19,17 @@ router.post("/add-hours", (req, res) => {
     return addToMonth(userName, userLog, hoursInMonth, selectedMonth); 
 });
 
-router.get("/view-hours-month", (req, res) => {
-    viewHoursFromMonth
-})
+router.post("/view-hours-month", async (req, res) => {
+    const { userName, userSelectMonth } = req.body;
+
+    try {
+        const { userHours, hours } = await viewHoursMonthProvider(userName, userSelectMonth);
+        res.json({ hours });
+    } catch (error) {
+        console.error("Ошибка при получении данных о часах:", error);
+        res.status(500).send('Ошибка сервера');
+    }
+});
 
 
 export { router };

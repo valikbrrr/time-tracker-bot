@@ -1,5 +1,4 @@
 import { Context, InlineKeyboard } from "grammy";
-import { Keyboard } from "grammy";
 import { webAppUrl } from "./bot";
 
 export const handleMessage = async (ctx: Context) => {
