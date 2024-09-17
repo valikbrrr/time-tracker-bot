@@ -17,12 +17,13 @@ export const viewHoursMonthProvider = async (userId: string, userSelectMonth: st
 
     const rows = await sheet.getRows();
 
-    const userHours = rows.filter((row: { get: (arg0: string) => any; }) => {
+    const userHours = rows.filter(row => {
         const id = row.get('Id');
+        console.log(`id - ${id}`);
         return id === userId; 
     });
-
-    console.log(`userHours - ${userHours}`);
+    
+    console.log(`userHours - ${userHours.toString()}`);
 
     const hours = userHours.map(row => {
         return Number(row.get('Hours') || 0); 

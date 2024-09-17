@@ -24,7 +24,6 @@ export const selectMonthForView = async (ctx: MyContext) => {
         await doc.loadInfo();
 
         const { userHours, hours } = await viewHoursMonthProvider(userId, userSelectMonth);
-
         if (userHours.length > 0) {
             await ctx.reply(`Ваши часы за месяц ${userSelectMonth}: ${hours}`);
         } else {

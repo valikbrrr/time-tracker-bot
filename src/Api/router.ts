@@ -21,10 +21,11 @@ router.post("/add-hours", (req, res) => {
 
 router.post("/view-hours-month", async (req, res) => {
     const { userId, userSelectMonth } = req.body;
+    console.log(`Received userId: ${userId}, userSelectMonth: ${userSelectMonth}`);
 
     try {
-        const {hours } = await viewHoursMonthProvider(userId, userSelectMonth);
-        console.log(`2.hours - ${hours}`);
+        const { userHours, hours } = await viewHoursMonthProvider(userId, userSelectMonth);
+        console.log(`2.hours - "${hours}"`);
         res.json({ hours });
     } catch (error) {
         console.error("Ошибка при получении данных о часах:", error);
