@@ -22,11 +22,12 @@ export const viewHoursMonthProvider = async (userId: string, userSelectMonth: st
         return id === userId; 
     });
 
-    console.log(userHours);
+    console.log(`userHours - ${userHours}`);
 
-    const hours = userHours.reduce((total: number, row: { get: (arg0: string) => any; }) => total + Number(row.get('Hours') || 0), 0); // Суммируем часы
+    const hours = userHours.map(row => {
+        return Number(row.get('Hours') || 0); 
+    }) 
     console.log(`1.hours - ${hours}`);
-    
 
     return { userHours, hours };
 }
