@@ -22,7 +22,11 @@ export const viewHoursMonthProvider = async (userId: string, userSelectMonth: st
         return id === userId; 
     });
 
-    const hours = userHours.reduce((total: number, row: { get: (arg0: string) => any; }) => total + Number(row.get('Hours') || 0), 0); // Суммируем часы
+    console.log(userHours);
 
-    return { userHours, hours }; // Возвращаем объект с данными
+    const hours = userHours.reduce((total: number, row: { get: (arg0: string) => any; }) => total + Number(row.get('Hours') || 0), 0); // Суммируем часы
+    console.log(`1.hours - ${hours}`);
+    
+
+    return { userHours, hours };
 }

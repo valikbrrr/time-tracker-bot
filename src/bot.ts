@@ -41,8 +41,6 @@ export const webAppUrl = "https://lucent-wisp-01e9e6.netlify.app/"
 const bot = new Bot<MyContext>(process.env.TELEGRAM_TOKEN || "");
 
 dbConnection()
-console.log("работает?");
-
 
 bot.use(accessControl);
 

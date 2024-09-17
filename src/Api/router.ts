@@ -20,10 +20,11 @@ router.post("/add-hours", (req, res) => {
 });
 
 router.post("/view-hours-month", async (req, res) => {
-    const { userName, userSelectMonth } = req.body;
+    const { userId, userSelectMonth } = req.body;
 
     try {
-        const { userHours, hours } = await viewHoursMonthProvider(userName, userSelectMonth);
+        const {hours } = await viewHoursMonthProvider(userId, userSelectMonth);
+        console.log(`2.hours - ${hours}`);
         res.json({ hours });
     } catch (error) {
         console.error("Ошибка при получении данных о часах:", error);

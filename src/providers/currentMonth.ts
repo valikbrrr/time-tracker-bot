@@ -13,7 +13,7 @@ export const currentMonth = () => {
     arr.push(controlDate.toLocaleString('default', { month: 'long' }))
 
     arr.reverse();
-    console.log(`currentMonth - ${arr}`);
+    // console.log(`currentMonth - ${arr}`);
     
     
     return arr
