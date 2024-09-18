@@ -22,7 +22,7 @@ export const viewHoursMonthProvider = async (userId: string, userSelectMonth: st
         console.log(`id - ${id}`);
         return id === userId; 
     });
-    
+
     console.log(`userHours - ${userHours.toString()}`);
 
     const hours = userHours.map(row => {

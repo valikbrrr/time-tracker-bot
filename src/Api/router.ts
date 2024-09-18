@@ -1,5 +1,5 @@
 import express from "express";
-import { getMonth, getProjects, viewHoursFromMonth } from "./controllers";
+import { getMonth, getProjects } from "./controllers";
 import { addToMonth } from "../providers/addToMonth";
 import { viewHoursMonthProvider } from "../providers/viewHoursMonthProvider";
 
@@ -21,10 +21,11 @@ router.post("/add-hours", (req, res) => {
 
 router.post("/view-hours-month", async (req, res) => {
     const { userId, userSelectMonth } = req.body;
-    console.log(`Received userId: ${userId}, userSelectMonth: ${userSelectMonth}`);
 
     try {
+        console.log(`Received userId: ${userId}, userSelectMonth: ${userSelectMonth}`);
         const { userHours, hours } = await viewHoursMonthProvider(userId, userSelectMonth);
+        console.log(`userHours - "${userHours}"`);
         console.log(`2.hours - "${hours}"`);
         res.json({ hours });
     } catch (error) {
