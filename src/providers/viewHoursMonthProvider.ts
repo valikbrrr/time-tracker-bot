@@ -19,16 +19,16 @@ export const viewHoursMonthProvider = async (userId: string, userSelectMonth: st
 
     const userHours = rows.filter(row => {
         const id = row.get('Id');
-        console.log(`id - ${id}`);
         return id === userId; 
     });
+    // id === userId ? hours : null
+    // userHours передаёт просто "true"
+    //!!!!!
 
-    console.log(`userHours - ${userHours.toString()}`);
 
     const hours = userHours.map(row => {
         return Number(row.get('Hours') || 0); 
     }) 
-    console.log(`1.hours - ${hours}`);
 
     return { userHours, hours };
 }

@@ -24,9 +24,20 @@ router.post("/view-hours-month", async (req, res) => {
 
     try {
         console.log(`Received userId: ${userId}, userSelectMonth: ${userSelectMonth}`);
-        const { userHours, hours } = await viewHoursMonthProvider(userId, userSelectMonth);
-        console.log(`userHours - "${userHours}"`);
-        console.log(`2.hours - "${hours}"`);
+        const { hours } = await viewHoursMonthProvider(userId, userSelectMonth);
+        res.json({ hours });
+    } catch (error) {
+        console.error("Ошибка при получении данных о часах:", error);
+        res.status(500).send('Ошибка сервера');
+    }
+});
+
+router.post("/view-hours-project", async (req, res) => {
+    const { userId, userSelectProject } = req.body;
+
+    try {
+        console.log(`Received userId: ${userId}, userSelectMonth: ${userSelectProject}`);
+        const { hours } = await viewHoursMonthProvider(userId, userSelectProject);
         res.json({ hours });
     } catch (error) {
         console.error("Ошибка при получении данных о часах:", error);

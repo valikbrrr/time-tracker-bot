@@ -35,3 +35,4 @@ export const addHours = async (req: Request<{}, {}, AddHoursRequest>, res: Respo
 export const viewHoursFromMonth = (userName: string, userSelectMonth: string) => {
     viewHoursMonthProvider(userName, userSelectMonth)
 }
+

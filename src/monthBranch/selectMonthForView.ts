@@ -11,6 +11,10 @@ export const selectMonthForView = async (ctx: MyContext) => {
     const callbackQuery = ctx.callbackQuery;
     const monthData = callbackQuery?.data?.substring(10).trim();
 
+    if (!callbackQuery || !callbackQuery.message) {
+        return; 
+    }
+
     // Проверяем, что monthData определено и является строкой
     if (!monthData) {
         await ctx.reply("Пожалуйста, выберите месяц.");
