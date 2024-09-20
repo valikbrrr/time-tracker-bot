@@ -32,11 +32,17 @@ export const addHours = async (req: Request<{}, {}, AddHoursRequest>, res: Respo
     }
 }
 
-export const viewHoursFromMonth = (userName: string, userSelectMonth: string) => {
-    console.log(`jjjjjjjjjjjjjjjjjjjjjjjjjjj`);
-    viewHoursMonthProvider(userName, userSelectMonth)
+export const viewMonthController = async (userId: string, userSelectMonth: string, res: Response) => {
+    try {
+        console.log(`Received userId: ${userId}, userSelectMonth: ${userSelectMonth}`);
+        const { hours } = await viewHoursMonthProvider(userId, userSelectMonth);
+        res.json({ hours });
+    } catch (error) {
+        console.error("Ошибка при получении данных о часах:", error);
+        res.status(500).send('Ошибка сервера');
+    }
 }
 
-// export const viewHoursFromP = (userName: string, userSelectMonth: string) => {
-//     viewHoursMonthProvider(userName, userSelectMonth)
+// export const viewProjectController = (userName: string, userSelectMonth: string) => {
+//     viewHoursProjectProvider(userName, userSelectMonth)
 // }

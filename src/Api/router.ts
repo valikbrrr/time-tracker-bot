@@ -1,5 +1,5 @@
 import express from "express";
-import { getMonth, getProjects } from "./controllers";
+import { getMonth, getProjects, viewMonthController,  } from "./controllers";
 import { addToMonth } from "../providers/addToMonth";
 import { viewHoursMonthProvider } from "../providers/viewHoursMonthProvider";
 
@@ -21,32 +21,26 @@ router.post("/add-hours", (req, res) => {
 
 router.post("/view-hours-month", async (req, res) => {
     const { userId, userSelectMonth } = req.body;
-
-    try {
-        console.log(`Received userId: ${userId}, userSelectMonth: ${userSelectMonth}`);
-        const { hours } = await viewHoursMonthProvider(userId, userSelectMonth);
-        res.json({ hours });
-    } catch (error) {
-        console.error("Ошибка при получении данных о часах:", error);
-        res.status(500).send('Ошибка сервера');
-    }
+    viewMonthController(userId, userSelectMonth, res)
 });
 
-router.post("/view-hours-project", async (req, res) => {
-    const { userId, userSelectProject } = req.body;
+// router.post("/view-hours-project", async (req, res) => {
+//     const { userId, userSelectProject } = req.body;
 
-    try {
-        console.log(`
-            project: 
-            Received userId: ${userId}, userSelectMonth: ${userSelectProject}`);
-        const { hours } = await viewHoursMonthProvider(userId, userSelectProject);
-        console.log(`hours in router - ${hours}`);
-        res.json({ hours });
-    } catch (error) {
-        console.error("Ошибка при получении данных о часах:", error);
-        res.status(500).send('Ошибка сервера');
-        console.log(`catch`);
-    }
-});
+//     viewProjectController(userId, userSelectProject)
+
+//     // try {
+//     //     console.log(`
+//     //         project: 
+//     //         Received userId: ${userId}, userSelectMonth: ${userSelectProject}`);
+//     //     const { hours } = await viewHoursMonthProvider(userId, userSelectProject);
+//     //     console.log(`hours in router - ${hours}`);
+//     //     res.json({ hours });
+//     // } catch (error) {
+//     //     console.error("Ошибка при получении данных о часах:", error);
+//     //     res.status(500).send('Ошибка сервера');
+//     //     console.log(`catch`);
+//     // }
+// });
 
 export { router };
