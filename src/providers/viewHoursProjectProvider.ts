@@ -1,6 +1,8 @@
 import { authenticate } from "../googleSheets/authenticate";
 
 export const viewHoursProjectProvider = async (userId: string, userSelectProject: string) => {
+    console.log(`userSelectProject - ${userSelectProject}`);
+    
     const projectSheetId = process.env.PROJECT_SHEET_ID as string;
     
     const doc = await authenticate(projectSheetId);

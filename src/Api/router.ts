@@ -1,5 +1,5 @@
 import express from "express";
-import { getMonth, getProjects, viewMonthController,  } from "./controllers";
+import { getMonth, getProjects, viewMonthController, viewProjectController,  } from "./controllers";
 import { addToMonth } from "../providers/addToMonth";
 import { viewHoursMonthProvider } from "../providers/viewHoursMonthProvider";
 
@@ -24,23 +24,12 @@ router.post("/view-hours-month", async (req, res) => {
     viewMonthController(userId, userSelectMonth, res)
 });
 
-// router.post("/view-hours-project", async (req, res) => {
-//     const { userId, userSelectProject } = req.body;
-
-//     viewProjectController(userId, userSelectProject)
-
-//     // try {
-//     //     console.log(`
-//     //         project: 
-//     //         Received userId: ${userId}, userSelectMonth: ${userSelectProject}`);
-//     //     const { hours } = await viewHoursMonthProvider(userId, userSelectProject);
-//     //     console.log(`hours in router - ${hours}`);
-//     //     res.json({ hours });
-//     // } catch (error) {
-//     //     console.error("Ошибка при получении данных о часах:", error);
-//     //     res.status(500).send('Ошибка сервера');
-//     //     console.log(`catch`);
-//     // }
-// });
+router.post("/view-hours-project", async (req, res) => {
+    const { userId, userSelectProject } = req.body;
+    console.log(`projectttt: 
+        Received userId: ${userId},
+        userSelectProject: ${userSelectProject}`);
+    viewProjectController(userId, userSelectProject, res)
+});
 
 export { router };

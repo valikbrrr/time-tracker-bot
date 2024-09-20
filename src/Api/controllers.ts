@@ -4,6 +4,7 @@ import { existsProject } from "../providers/existsProject";
 import { addToMonth } from "../providers/addToMonth";
 import { AddHoursRequest } from "../interface/interfaces";
 import { viewHoursMonthProvider } from "../providers/viewHoursMonthProvider";
+import { viewHoursProjectProvider } from "../providers/viewHoursProjectProvider";
 
 export const getMonth = (res: Response) => {
     const months = currentMonth();
@@ -43,6 +44,14 @@ export const viewMonthController = async (userId: string, userSelectMonth: strin
     }
 }
 
-// export const viewProjectController = (userName: string, userSelectMonth: string) => {
-//     viewHoursProjectProvider(userName, userSelectMonth)
-// }
+export const viewProjectController = async (userId: string, userSelectProject: string, res: Response) => {
+    try {
+        const { hours } = await viewHoursProjectProvider(userId, userSelectProject);
+        console.log(`hours in router - ${hours}`);
+        res.json({ hours });
+    } catch (error) {
+        console.error("Ошибка при получении данных о часах:", error);
+        res.status(500).send('Ошибка сервера');
+        console.log(`catch`);
+    }
+}
