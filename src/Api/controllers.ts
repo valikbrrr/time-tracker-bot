@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { currentMonth } from "../providers/currentMonth";
 import { existsProject } from "../providers/existsProject";
 import { addToMonth } from "../providers/addToMonth";
-import { AddHoursRequest } from "../interface/interfaces";
+// import { AddHoursRequest } from "../interface/interfaces";
 import { viewHoursMonthProvider } from "../providers/viewHoursMonthProvider";
 import { viewHoursProjectProvider } from "../providers/viewHoursProjectProvider";
 
@@ -21,9 +21,9 @@ export const getProjects = async (res: Response) => {
     }
 }
 
-export const addHours = async (req: Request<{}, {}, AddHoursRequest>, res: Response) => {
-    const { userName, userId, hoursInMonth, selectedMonth } = req.body;
 
+export const addToMonthController = async (userName: string, userId: string, hoursInMonth: string, selectedMonth: string, res: Response) => {
+    console.log(`work addToMonthController`);
     try {
         await addToMonth(userName, userId, hoursInMonth, selectedMonth);
         res.status(200).send('Часы успешно добавлены');
@@ -32,6 +32,7 @@ export const addHours = async (req: Request<{}, {}, AddHoursRequest>, res: Respo
         res.status(500).send('Ошибка сервера');
     }
 }
+
 
 export const viewMonthController = async (userId: string, userSelectMonth: string, res: Response) => {
     try {

@@ -7,7 +7,7 @@ export async function selectMonth(conversation: MyConversation, ctx: MyContextCo
     
     const userName = ctx.from?.username || ctx.from?.first_name || "Неизвестный пользователь";
     const userId = ctx.from?.id ? ctx.from.id.toString() : "Неизвестный id";
-    const selectedMonth = ctx.session.selected; // Получаем выбранный месяц
+    const selectedMonth = ctx.session.selected; 
 
     if (!selectedMonth) {
         await ctx.reply("Ошибка: выбранный месяц не определён. Пожалуйста, попробуйте снова.");
@@ -23,7 +23,7 @@ export async function selectMonth(conversation: MyConversation, ctx: MyContextCo
         hoursInMonth = response.message?.text;
 
         if (hoursInMonth && /^(?:[1-9]|[1-9]\d|[1-5]\d{2}|6[0-9]{2}|7[0-4][0-4])$/.test(hoursInMonth)) {
-            console.log(`1.userId - ${userId}`);
+            // console.log(`1.userId - ${userId}`);
             
             addToMonth(userName, userId, hoursInMonth, selectedMonth)
 

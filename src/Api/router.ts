@@ -1,7 +1,7 @@
 import express from "express";
-import { getMonth, getProjects, viewMonthController, viewProjectController,  } from "./controllers";
+import { addToMonthController, getMonth, getProjects, viewMonthController, viewProjectController,  } from "./controllers";
 import { addToMonth } from "../providers/addToMonth";
-import { viewHoursMonthProvider } from "../providers/viewHoursMonthProvider";
+// import { viewHoursMonthProvider } from "../providers/viewHoursMonthProvider";
 
 const router = express.Router();
 console.log("router is loading...");
@@ -14,9 +14,14 @@ router.get("/exist-projects", (req, res) => {
     getProjects(res);
 })
 
-router.post("/add-hours", (req, res) => {
-    const { userName, userLog, hoursInMonth, selectedMonth } = req.body; 
-    return addToMonth(userName, userLog, hoursInMonth, selectedMonth); 
+router.post("/add-hours-month", (req, res) => {
+    const { userName, userId, hoursInMonth, selectedMonth } = req.body; 
+    console.log(`work router.post`);
+    console.log(`userName - ${userName}`);
+    console.log(`userId - ${userId}`);
+    console.log(`hoursInMonth - ${hoursInMonth}`);
+    console.log(`selectedMonth - ${selectedMonth}`);
+    addToMonthController(userName, userId, hoursInMonth, selectedMonth, res); 
 });
 
 router.post("/view-hours-month", async (req, res) => {
@@ -26,9 +31,6 @@ router.post("/view-hours-month", async (req, res) => {
 
 router.post("/view-hours-project", async (req, res) => {
     const { userId, userSelectProject } = req.body;
-    console.log(`projectttt: 
-        Received userId: ${userId},
-        userSelectProject: ${userSelectProject}`);
     viewProjectController(userId, userSelectProject, res)
 });
 
