@@ -33,6 +33,10 @@ export const addHours = async (req: Request<{}, {}, AddHoursRequest>, res: Respo
 }
 
 export const viewHoursFromMonth = (userName: string, userSelectMonth: string) => {
+    console.log(`jjjjjjjjjjjjjjjjjjjjjjjjjjj`);
     viewHoursMonthProvider(userName, userSelectMonth)
 }
 
+// export const viewHoursFromP = (userName: string, userSelectMonth: string) => {
+//     viewHoursMonthProvider(userName, userSelectMonth)
+// }

@@ -36,12 +36,16 @@ router.post("/view-hours-project", async (req, res) => {
     const { userId, userSelectProject } = req.body;
 
     try {
-        console.log(`Received userId: ${userId}, userSelectMonth: ${userSelectProject}`);
+        console.log(`
+            project: 
+            Received userId: ${userId}, userSelectMonth: ${userSelectProject}`);
         const { hours } = await viewHoursMonthProvider(userId, userSelectProject);
+        console.log(`hours in router - ${hours}`);
         res.json({ hours });
     } catch (error) {
         console.error("Ошибка при получении данных о часах:", error);
         res.status(500).send('Ошибка сервера');
+        console.log(`catch`);
     }
 });
 
