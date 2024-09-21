@@ -1,7 +1,5 @@
 import express from "express";
-import { addToMonthController, addToProjectController, getMonth, getProjects, viewMonthController, viewProjectController,  } from "./controllers";
-import { addToMonth } from "../providers/addToMonth";
-// import { viewHoursMonthProvider } from "../providers/viewHoursMonthProvider";
+import { addToMonthController, addToProjectController, createProjectController, getMonth, getProjects, viewMonthController, viewProjectController,  } from "./controllers";
 
 const router = express.Router();
 console.log("router is loading...");
@@ -37,5 +35,11 @@ router.post("/view-hours-project", async (req, res) => {
     const { userId, userSelectProject } = req.body;
     viewProjectController(userId, userSelectProject, res)
 });
+
+router.post("/create-project", async (req, res) => {
+    const {projectName} = req.body
+    console.log(`projectName back - ${projectName}`);
+    createProjectController(projectName, res)
+})
 
 export { router };
