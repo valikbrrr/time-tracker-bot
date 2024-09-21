@@ -5,6 +5,7 @@ import { addToMonth } from "../providers/addToMonth";
 // import { AddHoursRequest } from "../interface/interfaces";
 import { viewHoursMonthProvider } from "../providers/viewHoursMonthProvider";
 import { viewHoursProjectProvider } from "../providers/viewHoursProjectProvider";
+import { addToProject } from "../providers/addToProject";
 
 export const getMonth = (res: Response) => {
     const months = currentMonth();
@@ -26,6 +27,18 @@ export const addToMonthController = async (userName: string, userId: string, hou
     console.log(`work addToMonthController`);
     try {
         await addToMonth(userName, userId, hoursInMonth, selectedMonth);
+        res.status(200).send('Часы успешно добавлены');
+    } catch (error) {
+        console.error('Ошибка при добавлении часов:', error);
+        res.status(500).send('Ошибка сервера');
+    }
+}
+
+
+export const addToProjectController = async (userName: string, userId: string, hoursInMonth: string, selectedProject: string, res: Response) => {
+    console.log(`work addToProjectController`);
+    try {
+        await addToProject(userName, userId, hoursInMonth, selectedProject);
         res.status(200).send('Часы успешно добавлены');
     } catch (error) {
         console.error('Ошибка при добавлении часов:', error);

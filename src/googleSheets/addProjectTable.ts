@@ -6,7 +6,6 @@ const projectSheetId = process.env.PROJECT_SHEET_ID as string;
 
 authenticate(projectSheetId);
 
-// Функция для добавления данных в таблицу
 export const addDataToProjectSheet = async (name: string, id: string, hours: string[], selectedProject: string) => {
     try {
         
