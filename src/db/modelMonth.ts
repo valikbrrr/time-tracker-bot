@@ -11,4 +11,3 @@ const timeTrackerMonthSchema = new mongoose.Schema({
 
 export const timeTrackerMonthModel = mongoose.model("timeTrackerMonth", timeTrackerMonthSchema);
 
-// FIND

@@ -19,7 +19,7 @@ export const getProjects = async (res: Response) => {
         return res.json(projects);
     } catch (error) {
         console.error('Ошибка при получении проектов:', error);
-        res.status(500).send('Ошибка сервера');
+        return res.status(500).send('Ошибка сервера');
     }
 }
 
@@ -28,10 +28,10 @@ export const addToMonthController = async (userName: string, userId: string, hou
     console.log(`work addToMonthController`);
     try {
         await addToMonth(userName, userId, hoursInMonth, selectedMonth);
-        res.status(200).send('Часы успешно добавлены');
+        return res.status(200).send('Часы успешно добавлены');
     } catch (error) {
         console.error('Ошибка при добавлении часов:', error);
-        res.status(500).send('Ошибка сервера');
+        return res.status(500).send('Ошибка сервера');
     }
 }
 
@@ -40,10 +40,10 @@ export const addToProjectController = async (userName: string, userId: string, h
     console.log(`work addToProjectController`);
     try {
         await addToProject(userName, userId, hoursInMonth, selectedProject);
-        res.status(200).send('Часы успешно добавлены');
+        return res.status(200).send('Часы успешно добавлены');
     } catch (error) {
         console.error('Ошибка при добавлении часов:', error);
-        res.status(500).send('Ошибка сервера');
+        return res.status(500).send('Ошибка сервера');
     }
 }
 
@@ -51,11 +51,12 @@ export const addToProjectController = async (userName: string, userId: string, h
 export const viewMonthController = async (userId: string, userSelectMonth: string, res: Response) => {
     try {
         console.log(`Received userId: ${userId}, userSelectMonth: ${userSelectMonth}`);
-        const { hours } = await viewHoursMonthProvider(userId, userSelectMonth);
-        res.json({ hours });
+        const hours = await viewHoursMonthProvider(userId, userSelectMonth);
+        // console.log(hours);
+        return res.json(hours);
     } catch (error) {
         console.error("Ошибка при получении данных о часах:", error);
-        res.status(500).send('Ошибка сервера');
+        return res.status(500).send('Ошибка сервера');
     }
 }
 
@@ -63,10 +64,10 @@ export const viewProjectController = async (userId: string, userSelectProject: s
     try {
         const { hours } = await viewHoursProjectProvider(userId, userSelectProject);
         console.log(`hours in router - ${hours}`);
-        res.json({ hours });
+        return res.json({ hours });
     } catch (error) {
         console.error("Ошибка при получении данных о часах:", error);
-        res.status(500).send('Ошибка сервера');
+        return res.status(500).send('Ошибка сервера');
         console.log(`catch`);
     }
 }
@@ -77,7 +78,7 @@ export const createProjectController = async (projectName: string, res: Response
         createProjectProvider(projectName)
     } catch (error) {
         console.error("Ошибка при получении данных о часах:", error);
-        res.status(500).send('Ошибка сервера');
+        return res.status(500).send('Ошибка сервера');
         console.log(`catch`);
     }
 }
