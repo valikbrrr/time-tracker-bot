@@ -11,7 +11,6 @@ export const viewHoursMonthProvider = async (userId: string, userSelectMonth: st
     
     if (data) {
         const users = data.data.filter((user) => user.id === userId);
-        
         if (users.length > 0) {
             const lastUser = users[users.length - 1];
             console.log(`userHours - ${lastUser.hours}`);
@@ -24,38 +23,3 @@ export const viewHoursMonthProvider = async (userId: string, userSelectMonth: st
     return null; 
 }
 
-
-
-
-
-
-
-// // const monthSheetId = process.env.MONTH_SHEET_ID as string;
-
-// // const doc = await authenticate(monthSheetId);
-// // await doc.loadInfo();
-
-// const year = currentYear() 
-// const sheetName = `${userSelectMonth} ${year}`; 
-
-// const sheet = doc.sheetsByTitle[sheetName];
-// if (!sheet) {
-//     throw new Error(`Лист "${sheetName}" не найден.`);
-// }
-
-// const rows = await sheet.getRows();
-
-// const userHours = rows.filter(row => {
-//     const id = row.get('Id');
-//     return id === userId; 
-// });
-// // id === userId ? hours : null
-// // userHours передаёт просто "true"
-// //!!!!!
-
-
-// const hours = userHours.map(row => {
-//     return Number(row.get('Hours') || 0); 
-// }) 
-
-// return { userHours, hours };

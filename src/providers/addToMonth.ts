@@ -13,5 +13,7 @@ export const addToMonth = async (userName: string, userId: string, hoursInMonth:
 
     updateArr?.push({name: userName, id: userId, hours: Number(hoursInMonth)})
 
-    await timeTrackerMonthModel.updateOne({monthAndYear: `${selectedMonth} ${currentYear()}`}, {data: updateArr})
+    
+
+    return await timeTrackerMonthModel.updateOne({monthAndYear: `${selectedMonth} ${currentYear()}`}, {data: updateArr})
 }

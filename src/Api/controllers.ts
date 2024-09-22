@@ -52,8 +52,8 @@ export const viewMonthController = async (userId: string, userSelectMonth: strin
     try {
         console.log(`Received userId: ${userId}, userSelectMonth: ${userSelectMonth}`);
         const hours = await viewHoursMonthProvider(userId, userSelectMonth);
-        // console.log(hours);
-        return res.json(hours);
+        console.log(`finish hours - ${hours}, type: ${typeof hours}`);
+        return res.json({ hours });
     } catch (error) {
         console.error("Ошибка при получении данных о часах:", error);
         return res.status(500).send('Ошибка сервера');
@@ -63,11 +63,10 @@ export const viewMonthController = async (userId: string, userSelectMonth: strin
 export const viewProjectController = async (userId: string, userSelectProject: string, res: Response) => {
     try {
         const hours = await viewHoursProjectProvider(userId, userSelectProject);
-        console.log(`hours in router - ${hours}`);
+        console.log(`hours in router - ${hours}, type: ${typeof hours}`);
         return res.json({ hours });
     } catch (error) {
         console.error("Ошибка при получении данных о часах:", error);
-        console.log(`catch`); 
         return res.status(500).send('Ошибка сервера');
     }
 }
