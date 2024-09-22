@@ -1,12 +1,8 @@
 import { Keyboard } from "grammy";
-import { authenticate } from "../googleSheets/authenticate";
 import { MyContext } from "../myContext";
 import { viewHoursMonthProvider } from "../providers/viewHoursMonthProvider";
-import { timeTrackerMonthModel } from "../db/modelMonth";
-import { currentYear } from "../utils/currentYear";
 
 export const selectMonthForView = async (ctx: MyContext) => {
-    // const monthSheetId = process.env.MONTH_SHEET_ID as string;
 
     const userId = ctx.from?.id ? ctx.from.id.toString() : "Неизвестный id";
 
@@ -17,27 +13,23 @@ export const selectMonthForView = async (ctx: MyContext) => {
         return; 
     }
 
-    // Проверяем, что monthData определено и является строкой
     if (!monthData) {
         await ctx.reply("Пожалуйста, выберите месяц.");
         return; 
     }
 
-    const userSelectMonth: string = monthData; // Присваиваем значение, зная, что оно не undefined
+    const userSelectMonth: string = monthData; 
 
     try {
-        // const year: number = currentYear()
-        // const monthAndYear = `${userSelectMonth} ${year}`;
-        // const data = await timeTrackerMonthModel.findOne( {monthAndYear: monthAndYear})
-        // const doc = await authenticate(monthSheetId);
-        // await doc.loadInfo();
-
         const hours  = await viewHoursMonthProvider(userId, userSelectMonth);
-        if (hours) {
+        console.log(`hours - ${hours}`);
+        
+        if (hours !== undefined && hours !== null) {
             await ctx.reply(`Ваши часы за месяц ${userSelectMonth}: ${hours}`);
         } else {
             await ctx.reply(`Данные не найдены для пользователя с id - ${userId}.`);
         }
+        
     } catch (error) {
         console.error("Ошибка при получении данных:", error);
         await ctx.reply("Произошла ошибка при получении данных. Пожалуйста, попробуйте позже.");

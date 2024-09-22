@@ -4,7 +4,6 @@ import { MyContext } from "../myContext";
 import { viewHoursProjectProvider } from "../providers/viewHoursProjectProvider";
 
 export const selectProjectForView = async (ctx: MyContext) => {
-    const projectSheetId = process.env.PROJECT_SHEET_ID as string;
 
     const userId = ctx.from?.id ? ctx.from.id.toString() : "Неизвестный id";
 
@@ -19,30 +18,19 @@ export const selectProjectForView = async (ctx: MyContext) => {
         await ctx.reply("Пожалуйста, выберите проект.");
         return; 
     }
-    // if (selectedProject) {
-        //     const sheet = doc.sheetsByTitle[selectedProject];
-        //     const rows = await sheet.getRows(); 
 
     const userSelectProject: string = projectData
     
-
     try {
-        const doc = await authenticate(projectSheetId);
-        await doc.loadInfo();
-        console.log(`userSelectProject - ${userSelectProject}`);
-        console.log(`userId - ${userId}`);
-        const {userHours, hours} = await viewHoursProjectProvider(userId, userSelectProject);
-        console.log(`userHours - ${userHours}`);
+        const hours = await viewHoursProjectProvider(userId, userSelectProject);
         console.log(`hours - ${hours}`);
-        
-        if (userHours.length > 0) {
-            console.log(`work if`);
-            // const newHours = userHours.map((row: any) => row.get('Hours')).join(", ");
+
+        if (hours !== undefined && hours !== null) {
             await ctx.reply(`Ваши часы в проекте "${userSelectProject}": ${hours}`);
         } else {
-            console.log(`work else`);
             await ctx.reply(`Данные не найдены для пользователя с id ${userId}.`);
         }
+
     } catch (error) {
         console.log(`work catch`);
     }

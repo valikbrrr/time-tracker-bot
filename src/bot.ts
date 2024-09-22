@@ -88,6 +88,7 @@ bot.hears("Удалить пользователя", async (ctx) => {
   }
 })
 
+bot.callbackQuery("botStart", botStart)
 
 bot.hears("Учёт времени по месяцам", selectMonthBranch)
 
@@ -101,7 +102,6 @@ bot.hears("Добавить часы за проект", selectAddInProject)
 
 bot.hears("Посмотреть ранее введённые часы в проектах", viewHoursProject)
 
-bot.callbackQuery("botStart", botStart)
 
 bot.callbackQuery(/viewProject_/, selectProjectForView)
 
@@ -146,6 +146,9 @@ bot.callbackQuery("backToMonths", callbackBackToMonth)
 let months: string[] = []
 months = currentMonth()
 bot.callbackQuery([...months], callbackMonthList)
+
+
+// bot.hears("< Вернуться в начало", botStart)
 
 
 bot.catch((err) => {

@@ -1,21 +1,35 @@
 import { timeTrackerMonthModel } from "../db/modelMonth";
-// import { authenticate } from "../googleSheets/authenticate";
 import { currentYear } from "../utils/currentYear";
 
 export const viewHoursMonthProvider = async (userId: string, userSelectMonth: string) => {
-    const year = currentYear()
+    const year = currentYear();
     const monthAndYear = `${userSelectMonth} ${year}`;
-    const data = await timeTrackerMonthModel.findOne( {monthAndYear: monthAndYear})
+    const data = await timeTrackerMonthModel.findOne({ monthAndYear: monthAndYear });
+    
     console.log(`data - ${data}`);
     console.log(`userSelectMonth - ${userSelectMonth}; year - ${year}`);
     
     if (data) {
-        const user = data.data.filter((user) => user.id === userId)
-        console.log(user[0].hours);
-        return user[0].hours
+        const users = data.data.filter((user) => user.id === userId);
+        
+        if (users.length > 0) {
+            const lastUser = users[users.length - 1];
+            console.log(`userHours - ${lastUser.hours}`);
+            return lastUser.hours; 
+        } else {
+            return null; 
+        }
     }
-    return new Error("unnable to find month and year") ;
+    
+    return null; 
 }
+
+
+
+
+
+
+
 // // const monthSheetId = process.env.MONTH_SHEET_ID as string;
 
 // // const doc = await authenticate(monthSheetId);
