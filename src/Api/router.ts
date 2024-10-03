@@ -1,5 +1,6 @@
 import express from "express";
 import { addToMonthController, addToProjectController, createProjectController, getMonth, getProjects, viewMonthController, viewProjectController,  } from "./controllers";
+import { logger } from "../utils/logger";
 
 const router = express.Router();
 console.log("router is loading...");

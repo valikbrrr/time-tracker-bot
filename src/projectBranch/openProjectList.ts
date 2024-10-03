@@ -1,13 +1,19 @@
 // src/projectBranch/openProjectList
-import { Context, InlineKeyboard } from "grammy";
+import { InlineKeyboard } from "grammy";
 import { existsProject } from "../providers/existsProject";
+import { MyContext } from "../myContext";
 
 
-export const openProjectList = async (ctx: Context) => {
-  let projectList:string[] = []
-  projectList = await existsProject(); 
-  const inlineKeyboard = new InlineKeyboard()
-
+export const openProjectList = async (ctx: MyContext) => {
+  let projectList:string[] | null = await existsProject(); 
+  if (projectList === null) {
+    const inlineKeyboard = new InlineKeyboard()
+    .text('Создать новый проект')
+    await ctx.reply("Проекты ещё не добавлены. Вы можете создать новый проект!", {
+      reply_markup: inlineKeyboard
+    })
+  } else {
+    const inlineKeyboard = new InlineKeyboard()
     projectList.forEach((project, index) => {
       inlineKeyboard.text(project, `project_${project}`)
       if ((index + 1) % 3 === 0) {
@@ -19,6 +25,7 @@ export const openProjectList = async (ctx: Context) => {
   })
   if (ctx.callbackQuery) {
     await ctx.answerCallbackQuery();
+  }
   }
 }
 

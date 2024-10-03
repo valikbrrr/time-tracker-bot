@@ -1,4 +1,4 @@
-import { Context, InlineKeyboard } from "grammy"
+import { InlineKeyboard } from "grammy"
 import { MyContext } from "../myContext";
 
 export const callbackProjectList = async (ctx: MyContext) => {

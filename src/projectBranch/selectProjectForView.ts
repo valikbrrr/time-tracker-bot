@@ -1,5 +1,4 @@
 import { Keyboard } from "grammy";
-import { authenticate } from "../googleSheets/authenticate";
 import { MyContext } from "../myContext";
 import { viewHoursProjectProvider } from "../providers/viewHoursProjectProvider";
 

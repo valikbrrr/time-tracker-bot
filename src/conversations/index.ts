@@ -6,6 +6,7 @@ import { addAdmin } from "../changeWhitelist/addAdmin";
 import { addUser } from "../changeWhitelist/addUser";
 import { removeUser } from "../changeWhitelist/removeUser";
 
+// review оч круто но не используется
 export const conversationMiddleware = [
     createConversation(selectMonth),
     createConversation(selectProject),

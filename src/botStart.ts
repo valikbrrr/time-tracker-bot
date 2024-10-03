@@ -1,12 +1,13 @@
-import { Context } from "grammy";
 import { Keyboard } from "grammy";
+import { MyContext } from "./myContext";
 
-export const botStart = async (ctx: Context) => {
+export const botStart = async (ctx: MyContext) => {
   const choiceDirection = new Keyboard()
-  .text("Учёт времени по месяцам").row()
-  .text("Учёт времени по проектам");
+    .text("Учёт времени по месяцам")
+    .row()
+    .text("Учёт времени по проектам");
   await ctx.reply("Выберите формат ввода времени", {
-  reply_markup: choiceDirection,
+    reply_markup: choiceDirection,
   });
-  await ctx.answerCallbackQuery()
+  await ctx.answerCallbackQuery();
 };

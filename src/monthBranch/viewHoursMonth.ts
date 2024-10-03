@@ -1,7 +1,8 @@
-import { Context, InlineKeyboard} from "grammy"
+import { InlineKeyboard} from "grammy"
 import { currentMonth } from "../providers/currentMonth"
+import { MyContext } from "../myContext"
 
-export const viewHoursMonth = async (ctx: Context) => {
+export const viewHoursMonth = async (ctx: MyContext) => {
   let months: string[] = []
   months = currentMonth()
   const inlineKeyboard = new InlineKeyboard()

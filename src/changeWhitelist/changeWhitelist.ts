@@ -1,6 +1,7 @@
 import { Context, Keyboard } from "grammy";
+import { MyContext } from "../myContext";
 
-export const changeWhitelist = async (ctx: Context) => {
+export const changeWhitelist = async (ctx: MyContext) => {
   console.log(ctx.isAdmin);
   if (ctx.isAdmin) {  // Используем ctx.isAdmin
     const selectChanges = new Keyboard()

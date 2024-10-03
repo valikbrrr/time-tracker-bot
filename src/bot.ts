@@ -35,8 +35,17 @@ import { addUser } from "./changeWhitelist/addUser";
 import { removeUser } from "./changeWhitelist/removeUser";
 import { botStart } from "./botStart";
 import cron from "node-cron"
+// import { handleBotStart, handleDisabledButton } from "./commands/startCommand";
 
 export const webAppUrl = "https://lucent-wisp-01e9e6.netlify.app/"
+
+// review
+// (async () => {
+// await  dbConnection()
+
+// })()
+
+// нужно ли .start или оно просто автоматически запускается?
 
 const bot = new Bot<MyContext>(process.env.TELEGRAM_TOKEN || "");
 
@@ -60,11 +69,31 @@ bot.use(hydrate())
 bot.use(createConversation(selectMonth));
 bot.use(createConversation(selectProject));
 bot.use(createConversation(createNewProject));
-bot.use(createConversation(addAdmin)),
-bot.use(createConversation(addUser)),
-bot.use(createConversation(removeUser)),
+bot.use(createConversation(addAdmin));
+bot.use(createConversation(addUser));
+bot.use(createConversation(removeUser));
 
+// review
 
+// const hearsMap: Record<string, (ctx: MyContext) => Promise<void>> = {
+//   ["Добавить администратора"]: async (ctx) => {
+//     if (ctx.isAdmin) {
+//       await ctx.reply("Напишите id нового администратора")
+//       await ctx.conversation.enter(`addAdmin`)
+//     }
+//   },
+//   ["Добавить пользователя"]: async (ctx) => {
+//     if (ctx.isAdmin) {
+//       await ctx.reply(`Напишите id нового пользователя`)
+//       await ctx.conversation.enter(`addUser`)
+//     }
+//   },
+//   ["Учёт времени по месяцам"]: selectMonthBranch,
+// }
+
+// for (const [key, callback] of Object.entries(hearsMap)) {
+//   bot.hears(key, callback)
+// }
 
 
 bot.hears("Добавить администратора", async (ctx) => {
@@ -114,6 +143,16 @@ bot.hears("Создать новый проект", async (ctx) => {
   await ctx.conversation.enter(`createNewProject`)
 })
 
+bot.callbackQuery("Создать новый проект", async (ctx) => {
+  await ctx.reply(`Введите название нового проекта:`)
+  await ctx.conversation.enter(`createNewProject`)
+  await ctx.answerCallbackQuery()
+})
+
+// Регистрация обработчиков
+// bot.callbackQuery("botStart", handleBotStart);
+// bot.callbackQuery("disabled", handleDisabledButton);
+
 bot.callbackQuery("callbackOpenProjectList", openProjectList) 
 
 bot.callbackQuery(/project_/, callbackProjectList)
@@ -148,7 +187,7 @@ months = currentMonth()
 bot.callbackQuery([...months], callbackMonthList)
 
 
-// bot.hears("< Вернуться в начало", botStart)
+bot.hears("< Вернуться в начало", botStart)
 
 
 bot.catch((err) => {
@@ -174,7 +213,8 @@ cron.schedule('0 0 1 * *', async () => {
       const doc = await authenticate(process.env.MONTH_SHEET_ID as string);
       await doc.loadInfo();
       const newSheet = await doc.addSheet({ title: `${month} ${year}` });
-      newSheet.setHeaderRow(["Name", "Log", "Hours"]);
+      console.log(`newSheet - ${month} ${year}`);
+      newSheet.setHeaderRow(["Name", "Id", "Hours"]);
       timeTrackerMonthModel.create({monthAndYear: `${month} ${year}`, data: []})
   } catch (error) {
       console.error("Error");

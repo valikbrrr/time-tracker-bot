@@ -1,6 +1,7 @@
-import { Context, Keyboard } from "grammy"
+import { Keyboard } from "grammy"
+import { MyContext } from "../myContext"
 
-export const selectAddInProject = async (ctx: Context) => {
+export const selectAddInProject = async (ctx: MyContext) => {
     const projectSelectOrCreate = new Keyboard()
       .text("Открыть список проектов").row()
       .text("Создать новый проект")

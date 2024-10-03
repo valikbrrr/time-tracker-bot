@@ -1,7 +1,8 @@
-import { Context, InlineKeyboard } from "grammy";
+import { InlineKeyboard } from "grammy";
 import { webAppUrl } from "../bot";
+import { MyContext } from "../myContext";
 
-export const startCommand = async (ctx: Context) => {
+export const startCommand = async (ctx: MyContext) => {
   const inlinekeyboard = new InlineKeyboard()
     .text("Воспользоваться ботом", "botStart").row()
     .webApp("Открыть бота в приложении", webAppUrl); 
