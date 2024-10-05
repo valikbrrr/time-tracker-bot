@@ -12,8 +12,8 @@ if (!uri) {
 }
 
 mongoose.connect(uri, {
-    serverSelectionTimeoutMS: 20000, // Увеличили таймаут до 20 секунд
-    socketTimeoutMS: 45000, // Увеличили таймаут сокета до 45 секунд
+    serverSelectionTimeoutMS: 20000, // таймаут 20 секунд
+    socketTimeoutMS: 45000, // таймаут сокета 45 секунд
 });
 
 export const addDataToMonthSheet = async (name: string, id: string, hours: string[], month: string) => {

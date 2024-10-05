@@ -1,8 +1,8 @@
 // src/conversations/createNewProject
 import { MyConversation, MyContextConversation } from "../myContext";
 import { InlineKeyboard } from "grammy";
-import { authenticate } from "../googleSheets/authenticate";
-import { timeTrackerProjModel } from "../db/modelProject";
+// import { authenticate } from "../googleSheets/authenticate";
+// import { timeTrackerProjModel } from "../db/modelProject";
 import { createProjectProvider } from "../providers/createProjectProvider";
 
 export async function createNewProject(conversation: MyConversation, ctx: MyContextConversation) {
