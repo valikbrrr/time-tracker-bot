@@ -1,13 +1,13 @@
 import { timeTrackerMonthModel } from "../db/modelMonth";
 import { currentYear } from "../utils/currentYear";
+import { logger } from "../utils/logger";
 
 export const viewHoursMonthProvider = async (userId: string, userSelectMonth: string) => {
     const year = currentYear();
     const monthAndYear = `${userSelectMonth} ${year}`;
     const data = await timeTrackerMonthModel.findOne({ monthAndYear: monthAndYear });
     
-    console.log(`data - ${data}`);
-    console.log(`userSelectMonth - ${userSelectMonth}; year - ${year}`);
+    logger.info(`userSelectMonth - ${userSelectMonth}; year - ${year}`);
     
     if (data) {
         const users = data.data.filter((user) => user.id === userId);

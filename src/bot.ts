@@ -103,11 +103,11 @@ export const webAppUrl = "https://lucent-wisp-01e9e6.netlify.app/";
       let months = currentMonth();
       let month = months[2];
       let year = currentYear();
-      logger.log("Cron is work");
+      logger.info("Cron is work");
       const doc = await authenticate(process.env.MONTH_SHEET_ID as string);
       await doc.loadInfo();
       const newSheet = await doc.addSheet({ title: `${month} ${year}` });
-      logger.log(`newSheet - ${month} ${year}`);
+      logger.info(`newSheet - ${month} ${year}`);
       newSheet.setHeaderRow(["Name", "Id", "Hours"]);
       timeTrackerMonthModel.create({
         monthAndYear: `${month} ${year}`,

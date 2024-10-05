@@ -3,7 +3,7 @@ import { addToMonthController, addToProjectController, createProjectController, 
 import { logger } from "../utils/logger";
 
 const router = express.Router();
-logger.log("router is loading...");
+logger.info("router is loading...");
 
 router.get("/current-month", (req, res) => {
     logger.info("work router - /current-month")

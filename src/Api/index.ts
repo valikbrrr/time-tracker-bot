@@ -13,7 +13,7 @@ app.use(bodyParser.json());
 
 // Middleware для логирования запросов
 app.use((req: Request, res: Response, next: NextFunction) => {
-  logger.log(`${req.method} ${req.url}`);
+  logger.info(`${req.method} ${req.url}`);
   next();
 });
 
@@ -22,7 +22,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
   const originalSend = res.send;
 
   res.send = function (body?: any): Response {
-    logger.log(`Response status: ${res.statusCode}`);
+    logger.info(`Response status: ${res.statusCode}`);
     return originalSend.call(this, body);
   };
 
@@ -34,7 +34,7 @@ app.use("/api", router);
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
-  logger.log(`Server running on port ${PORT}`);
+  logger.info(`Server running on port ${PORT}`);
 });
 
 // Обработка ошибок с явными типами

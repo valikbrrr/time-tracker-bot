@@ -37,7 +37,7 @@ export const addToMonthController = async (userName: string, userId: string, hou
 
 
 export const addToProjectController = async (userName: string, userId: string, hoursInMonth: string, selectedProject: string, res: Response) => {
-    logger.log(`work addToProjectController`);
+    logger.info(`work addToProjectController`);
     try {
         await addToProject(userName, userId, hoursInMonth, selectedProject);
         return res.status(200).send('Часы успешно добавлены');
@@ -50,12 +50,12 @@ export const addToProjectController = async (userName: string, userId: string, h
 
 export const viewMonthController = async (userId: string, userSelectMonth: string, res: Response) => {
     try {
-        logger.log(`Received userId: ${userId}, userSelectMonth: ${userSelectMonth}`);
+        logger.info(`Received userId: ${userId}, userSelectMonth: ${userSelectMonth}`);
         const hours = await viewHoursMonthProvider(userId, userSelectMonth);
-        logger.log(`finish hours - ${hours}, type: ${typeof hours}`);
+        logger.info(`finish hours - ${hours}, type: ${typeof hours}`);
         return res.json({ hours });
     } catch (error) {
-        logger.error("Ошибка при получении данных о часах:", error);
+        logger.info("Ошибка при получении данных о часах:", error);
         return res.status(500).send('Ошибка сервера');
     }
 }
@@ -63,7 +63,7 @@ export const viewMonthController = async (userId: string, userSelectMonth: strin
 export const viewProjectController = async (userId: string, userSelectProject: string, res: Response) => {
     try {
         const hours = await viewHoursProjectProvider(userId, userSelectProject);
-        logger.log(`hours in router - ${hours}, type: ${typeof hours}`);
+        logger.info(`hours in router - ${hours}, type: ${typeof hours}`);
         return res.json({ hours });
     } catch (error) {
         logger.error("Ошибка при получении данных о часах:", error);
@@ -77,7 +77,7 @@ export const createProjectController = async (projectName: string, res: Response
         createProjectProvider(projectName)
     } catch (error) {
         logger.error("Ошибка при получении данных о часах:", error);
-        logger.log(`catch`);
+        logger.info(`catch`);
         return res.status(500).send('Ошибка сервера');
     }
 }
