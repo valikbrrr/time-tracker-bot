@@ -1,4 +1,4 @@
-import { MyContext } from "../myContext";
+import { MyContext } from "../tg/myContext";
 
 export const addAdminFunc = async (ctx: MyContext) => {
   if (ctx.isAdmin) {

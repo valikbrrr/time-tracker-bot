@@ -1,7 +1,7 @@
 import { Context } from "grammy";
 import { getUserWhitelist } from "./usersWhitelist";
 import { getAdminWhitelist } from "./adminsWhitelist";
-import { MyContext } from "../myContext";
+import { MyContext } from "../tg/myContext";
 
 declare module "grammy" {
   interface Context {

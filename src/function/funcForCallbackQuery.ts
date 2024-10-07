@@ -1,4 +1,4 @@
-import { MyContext } from "../myContext";
+import { MyContext } from "../tg/myContext";
 
 export const createNewProjectCallback = async (ctx: MyContext) => {
   await ctx.reply(`Введите название нового проекта:`);

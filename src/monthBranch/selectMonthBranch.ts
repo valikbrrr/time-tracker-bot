@@ -1,5 +1,5 @@
 import { Keyboard } from "grammy";
-import { MyContext } from "../myContext";
+import { MyContext } from "../tg/myContext";
 
 export const selectMonthBranch = async (ctx: MyContext) => {
   const timeMonth = new Keyboard()

@@ -1,24 +1,30 @@
 // src/monthBranch/callbackMonthList.ts
 import { InlineKeyboard } from "grammy";
-import { MyContext } from "../myContext";
+import { MyContext } from "../tg/myContext";
 
 export const callbackMonthList = async (ctx: MyContext) => {
-    const callbackQuery = ctx.callbackQuery;
-    
-    if (!callbackQuery || !callbackQuery.message) {
-        return; 
-    } 
+  const callbackQuery = ctx.callbackQuery;
 
-    let selectedMonth = callbackQuery.data; // Сохраняем выбранный месяц
-    ctx.session.selected = selectedMonth; 
+  if (!callbackQuery || !callbackQuery.message) {
+    return;
+  }
 
-    const inlineKeyboard = new InlineKeyboard()
-        .text("Да, продолжить", "nextStepMonth").row()
-        .text("< Вернуться к выбору месяца", "backToMonths");
-    await ctx.api.editMessageText(callbackQuery.message.chat.id, callbackQuery.message.message_id, `Вы выбрали месяц: ${selectedMonth}`, {
-        reply_markup: inlineKeyboard,
-    });
-    await ctx.answerCallbackQuery();
+  let selectedMonth = callbackQuery.data; // Сохраняем выбранный месяц
+  ctx.session.selected = selectedMonth;
+
+  const inlineKeyboard = new InlineKeyboard()
+    .text("Да, продолжить", "nextStepMonth")
+    .row()
+    .text("< Вернуться к выбору месяца", "backToMonths");
+  await ctx.api.editMessageText(
+    callbackQuery.message.chat.id,
+    callbackQuery.message.message_id,
+    `Вы выбрали месяц: ${selectedMonth}`,
+    {
+      reply_markup: inlineKeyboard,
+    }
+  );
+  await ctx.answerCallbackQuery();
 };
 
 // console.log(ctx.match);

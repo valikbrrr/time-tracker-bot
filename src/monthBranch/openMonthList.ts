@@ -1,7 +1,7 @@
 // src/monthBranch/openMonthList.ts
 import { InlineKeyboard } from "grammy";
 import { currentMonth } from "../providers/currentMonth";
-import { MyContext } from "../myContext";
+import { MyContext } from "../tg/myContext";
 
 export const openMonthList = async (ctx: MyContext) => {
   let months: string[] = [];

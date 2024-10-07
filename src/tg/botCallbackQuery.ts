@@ -3,11 +3,11 @@ import {
   createNewProjectCallback,
   nextStepMonthFunc,
   nextStepProjectFunc,
-} from "./function/funcForCallbackQuery";
-import { callbackBackToMonth } from "./monthBranch/callbackBackToMonth";
+} from "../function/funcForCallbackQuery";
+import { callbackBackToMonth } from "../monthBranch/callbackBackToMonth";
 import { MyContext } from "./myContext";
-import { callbackBackToProject } from "./projectBranch/callbackBackToProject";
-import { openProjectList } from "./projectBranch/openProjectList";
+import { callbackBackToProject } from "../projectBranch/callbackBackToProject";
+import { openProjectList } from "../projectBranch/openProjectList";
 
 export const callbackQueryMap: Record<
   string,
