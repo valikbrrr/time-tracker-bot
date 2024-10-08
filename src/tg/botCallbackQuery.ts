@@ -19,7 +19,7 @@ export const callbackQueryMap: Record<
   ["nextStepProject"]: nextStepProjectFunc,
   ["backToProjects"]: callbackBackToProject,
   ["nextStepMonth"]: nextStepMonthFunc,
-  //   ["backToMonths"]: callbackBackToMonth,
+  ["backToMonths"]: callbackBackToMonth,
   //   ["backToMonths"]: callbackBackToMonth,
   //   ["backToMonths"]: callbackBackToMonth,
   //   ["backToMonths"]: callbackBackToMonth,

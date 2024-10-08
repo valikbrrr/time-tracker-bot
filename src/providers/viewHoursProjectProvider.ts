@@ -1,10 +1,11 @@
 import { timeTrackerProjModel } from "../db/modelProject";
+import { logger } from "../utils/logger";
 
 export const viewHoursProjectProvider = async (userId: string, userSelectProject: string) => {
     const data = await timeTrackerProjModel.findOne({ project: userSelectProject });
 
-    console.log(`data - ${data}`);
-    console.log(`userSelectProject - ${userSelectProject}`);
+    logger.info(`data - ${data}`);
+    logger.info(`userSelectProject - ${userSelectProject}`);
 
     if (data) {
         const users = data.data.filter((user) => user.id === userId);

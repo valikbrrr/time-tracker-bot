@@ -1,5 +1,5 @@
 import { InlineKeyboard } from "grammy";
-import { webAppUrl } from "../bot";
+import { webAppUrl } from "../tg/bot";
 import { MyContext } from "../tg/myContext";
 
 export const startCommand = async (ctx: MyContext) => {

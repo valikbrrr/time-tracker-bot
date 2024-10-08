@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc",
     "start": "nodemon index.ts",
-    "dev": "concurrently \"env-cmd ts-node-dev src/bot.ts\" \"env-cmd ts-node-dev src/Api/index.ts\""
+    "dev": "concurrently \"env-cmd ts-node-dev src/tg/bot.ts\" \"env-cmd ts-node-dev src/Api/index.ts\""
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
