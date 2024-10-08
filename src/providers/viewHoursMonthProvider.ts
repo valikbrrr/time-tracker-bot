@@ -10,12 +10,14 @@ export const viewHoursMonthProvider = async (userId: string, userSelectMonth: st
     logger.info(`userSelectMonth - ${userSelectMonth}; year - ${year}`);
     
     if (data) {
+        logger.info(`if in provider work`)
         const users = data.data.filter((user) => user.id === userId);
         if (users.length > 0) {
             const lastUser = users[users.length - 1];
             console.log(`userHours - ${lastUser.hours}`);
             return lastUser.hours; 
         } else {
+            logger.info(`else - return null`)
             return null; 
         }
     }
