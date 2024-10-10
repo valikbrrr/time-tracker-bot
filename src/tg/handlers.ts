@@ -1,8 +1,9 @@
 import { InlineKeyboard } from "grammy";
-import { webAppUrl } from "../tg/bot";
-import { MyContext } from "../tg/myContext";
+import { webAppUrl } from "./bot";
+import { MyContext } from "./myContext";
 
-export const startCommand = async (ctx: MyContext) => {
+export const handleMessage = async (ctx: MyContext) => {
+  console.log(`Получено сообщение: ${ctx.message?.text}`);
   const inlinekeyboard = new InlineKeyboard()
     .text("Воспользоваться ботом", "botStart")
     .row()

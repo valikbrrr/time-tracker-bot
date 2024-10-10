@@ -6,22 +6,29 @@
   "scripts": {
     "build": "tsc",
     "start": "nodemon index.ts",
-    "dev": "env-cmd ts-node-dev src/bot.ts"
+    "dev": "concurrently \"env-cmd ts-node-dev src/tg/bot.ts\" \"env-cmd ts-node-dev src/Api/index.ts\""
   },
   "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
     "@types/node": "^20.14.15",
     "@types/node-cron": "^3.0.11",
+    "concurrently": "^9.0.1",
     "typescript": "^5.5.4"
   },
   "dependencies": {
     "@grammyjs/conversations": "^1.2.0",
     "@grammyjs/hydrate": "^1.4.1",
     "@grammyjs/menu": "^1.2.2",
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
     "env-cmd": "^10.1.0",
+    "express": "^4.19.2",
     "google-auth-library": "^9.13.0",
     "google-spreadsheet": "^4.1.2",
     "googleapis": "^140.0.1",
     "grammy": "^1.28.0",
+    "log4js": "^6.9.1",
     "mongoose": "^8.5.4",
     "node-cron": "^3.0.3",
     "nodemon": "^3.1.4",

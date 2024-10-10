@@ -1,5 +1,5 @@
-import { Context } from "grammy";
+import { MyContext } from "../tg/myContext";
 
-export const myIdCommand = async (ctx: Context) => {
+export const myIdCommand = async (ctx: MyContext) => {
   await ctx.reply(`Вот ваш id: ${ctx.from?.id}`);
 };
