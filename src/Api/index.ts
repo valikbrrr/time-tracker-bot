@@ -36,9 +36,3 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   logger.info(`Server running on port ${PORT}`);
 });
-
-// Обработка ошибок с явными типами
-// app.use((err: any, req: Request, res: Response, next: NextFunction) => {
-//   console.error(err.stack);
-//   res.status(500).send("Что-то пошло не так!");
-// });

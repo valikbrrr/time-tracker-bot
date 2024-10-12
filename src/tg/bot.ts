@@ -27,12 +27,6 @@ import { callbackQueryMap } from "./botCallbackQuery";
 import { logger } from "../utils/logger";
 
 // review
-// (async () => {
-// await  dbConnection()
-
-// })()
-
-// нужно ли .start или оно просто автоматически запускается?
 
 export const webAppUrl = "https://lucent-wisp-01e9e6.netlify.app/";
 

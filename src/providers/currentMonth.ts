@@ -1,18 +1,18 @@
 export const currentMonth = () => {
-    let arr:string[] = []
-    let controlDate = new Date()
+  let arr: string[] = [];
+  let controlDate = new Date();
 
-    arr.push(controlDate.toLocaleString('default', { month: 'long' }))
+  arr.push(controlDate.toLocaleString("default", { month: "long" }));
 
-    controlDate.setMonth(controlDate.getMonth()-1);
+  controlDate.setMonth(controlDate.getMonth() - 1);
 
-    arr.push(controlDate.toLocaleString('default', { month: 'long' }))
+  arr.push(controlDate.toLocaleString("default", { month: "long" }));
 
-    controlDate.setMonth(controlDate.getMonth()-1);
+  controlDate.setMonth(controlDate.getMonth() - 1);
 
-    arr.push(controlDate.toLocaleString('default', { month: 'long' }))
+  arr.push(controlDate.toLocaleString("default", { month: "long" }));
 
-    arr.reverse();
-    
-    return arr
-}
+  arr.reverse();
+
+  return arr;
+};
